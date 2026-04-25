@@ -66,6 +66,13 @@ git push -u origin master
 
 After deploy, open the generated **`.up.railway.app`** URL and test **Book**.
 
+### Railway: `DATABASE_URL` missing or logs show `sqlite`
+
+1. **Variable on the web service:** Open the **clearfield-modern-work** service (not only the Postgres plugin) → **Variables**. You must see **`DATABASE_URL`** there, usually as a reference: `${{Postgres.DATABASE_URL}}`. If it only exists on Postgres, the app container never receives it—add it with **Add variable → Variable reference**.
+2. **Redeploy:** After adding or changing variables, trigger a **new deployment** (Redeploy). Env changes do not always apply to already-running containers.
+3. **Old build:** If Prisma errors mention **`provider = "sqlite"`**, Railway is still running an **old image** from before the repo switched to PostgreSQL. Confirm the deployment’s **Git commit** matches your latest `master`, then redeploy. **Watchdog:** Settings → clear stale build cache if Railway offers it, or push an empty commit to force a rebuild.
+4. **Build-time:** Keep **“Available at build time”** enabled on `DATABASE_URL` so `prisma migrate deploy` can run during `npm run build`.
+
 ## Production notes
 
 - **Database:** PostgreSQL (Railway plugin or any host). `DATABASE_URL` must match Prisma’s `postgresql://…` format.
