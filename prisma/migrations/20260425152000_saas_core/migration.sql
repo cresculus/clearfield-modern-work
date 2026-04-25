@@ -1,17 +1,80 @@
+-- Idempotent SaaS core migration.
+-- Safe to re-run after partial application.
+
+-- Bootstrap core tables in case the initial migration is missing in target DB.
+CREATE TABLE IF NOT EXISTS "Client" (
+    "id" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "creditBalance" INTEGER NOT NULL DEFAULT 0,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    CONSTRAINT "Client_pkey" PRIMARY KEY ("id")
+);
+
+CREATE TABLE IF NOT EXISTS "CreditLedger" (
+    "id" TEXT NOT NULL,
+    "clientId" TEXT NOT NULL,
+    "delta" INTEGER NOT NULL,
+    "reason" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT "CreditLedger_pkey" PRIMARY KEY ("id")
+);
+
+CREATE TABLE IF NOT EXISTS "Booking" (
+    "id" TEXT NOT NULL,
+    "clientId" TEXT NOT NULL,
+    "startsAt" TIMESTAMP(3) NOT NULL,
+    "endsAt" TIMESTAMP(3) NOT NULL,
+    "kind" TEXT NOT NULL DEFAULT 'paid',
+    "status" TEXT NOT NULL DEFAULT 'confirmed',
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT "Booking_pkey" PRIMARY KEY ("id")
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS "Client_email_key" ON "Client"("email");
+CREATE INDEX IF NOT EXISTS "CreditLedger_clientId_idx" ON "CreditLedger"("clientId");
+CREATE INDEX IF NOT EXISTS "Booking_clientId_idx" ON "Booking"("clientId");
+CREATE UNIQUE INDEX IF NOT EXISTS "Booking_startsAt_key" ON "Booking"("startsAt");
+
+DO $$
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'CreditLedger_clientId_fkey') THEN
+    ALTER TABLE "CreditLedger" ADD CONSTRAINT "CreditLedger_clientId_fkey"
+      FOREIGN KEY ("clientId") REFERENCES "Client"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+  END IF;
+END $$;
+
+DO $$
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'Booking_clientId_fkey') THEN
+    ALTER TABLE "Booking" ADD CONSTRAINT "Booking_clientId_fkey"
+      FOREIGN KEY ("clientId") REFERENCES "Client"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+  END IF;
+END $$;
+
 -- AlterTable
-ALTER TABLE "Client"
-ADD COLUMN     "company" TEXT,
-ADD COLUMN     "emailOptIn" BOOLEAN NOT NULL DEFAULT true,
-ADD COLUMN     "fullName" TEXT;
+ALTER TABLE "Client" ADD COLUMN IF NOT EXISTS "company" TEXT;
+ALTER TABLE "Client" ADD COLUMN IF NOT EXISTS "emailOptIn" BOOLEAN NOT NULL DEFAULT true;
+ALTER TABLE "Client" ADD COLUMN IF NOT EXISTS "fullName" TEXT;
 
 -- CreateEnum
-CREATE TYPE "UserRole" AS ENUM ('USER', 'ADMIN');
+DO $$
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'UserRole') THEN
+    CREATE TYPE "UserRole" AS ENUM ('USER', 'ADMIN');
+  END IF;
+END $$;
 
 -- CreateEnum
-CREATE TYPE "PurchaseStatus" AS ENUM ('PENDING', 'PAID', 'FAILED', 'REFUNDED');
+DO $$
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'PurchaseStatus') THEN
+    CREATE TYPE "PurchaseStatus" AS ENUM ('PENDING', 'PAID', 'FAILED', 'REFUNDED');
+  END IF;
+END $$;
 
 -- CreateTable
-CREATE TABLE "User" (
+CREATE TABLE IF NOT EXISTS "User" (
     "id" TEXT NOT NULL,
     "bookingAccountId" TEXT NOT NULL,
     "email" TEXT NOT NULL,
@@ -20,12 +83,11 @@ CREATE TABLE "User" (
     "isActive" BOOLEAN NOT NULL DEFAULT true,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "UserSession" (
+CREATE TABLE IF NOT EXISTS "UserSession" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "tokenHash" TEXT NOT NULL,
@@ -34,12 +96,11 @@ CREATE TABLE "UserSession" (
     "revokedAt" TIMESTAMP(3),
     "ipAddress" TEXT,
     "userAgent" TEXT,
-
     CONSTRAINT "UserSession_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "CreditPack" (
+CREATE TABLE IF NOT EXISTS "CreditPack" (
     "id" TEXT NOT NULL,
     "slug" TEXT NOT NULL,
     "title" TEXT NOT NULL,
@@ -49,12 +110,11 @@ CREATE TABLE "CreditPack" (
     "displayOrder" INTEGER NOT NULL DEFAULT 0,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-
     CONSTRAINT "CreditPack_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "Purchase" (
+CREATE TABLE IF NOT EXISTS "Purchase" (
     "id" TEXT NOT NULL,
     "bookingAccountId" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
@@ -68,63 +128,69 @@ CREATE TABLE "Purchase" (
     "notes" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-
     CONSTRAINT "Purchase_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "EmailSubscriber" (
+CREATE TABLE IF NOT EXISTS "EmailSubscriber" (
     "id" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "fullName" TEXT,
     "source" TEXT NOT NULL DEFAULT 'site',
     "subscribedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "unsubscribedAt" TIMESTAMP(3),
-
     CONSTRAINT "EmailSubscriber_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
-
--- CreateIndex
-CREATE INDEX "User_bookingAccountId_idx" ON "User"("bookingAccountId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "UserSession_tokenHash_key" ON "UserSession"("tokenHash");
-
--- CreateIndex
-CREATE INDEX "UserSession_userId_idx" ON "UserSession"("userId");
-
--- CreateIndex
-CREATE INDEX "UserSession_expiresAt_idx" ON "UserSession"("expiresAt");
-
--- CreateIndex
-CREATE UNIQUE INDEX "CreditPack_slug_key" ON "CreditPack"("slug");
-
--- CreateIndex
-CREATE INDEX "Purchase_bookingAccountId_idx" ON "Purchase"("bookingAccountId");
-
--- CreateIndex
-CREATE INDEX "Purchase_userId_idx" ON "Purchase"("userId");
-
--- CreateIndex
-CREATE INDEX "Purchase_createdAt_idx" ON "Purchase"("createdAt");
-
--- CreateIndex
-CREATE UNIQUE INDEX "EmailSubscriber_email_key" ON "EmailSubscriber"("email");
+CREATE UNIQUE INDEX IF NOT EXISTS "User_email_key" ON "User"("email");
+CREATE INDEX IF NOT EXISTS "User_bookingAccountId_idx" ON "User"("bookingAccountId");
+CREATE UNIQUE INDEX IF NOT EXISTS "UserSession_tokenHash_key" ON "UserSession"("tokenHash");
+CREATE INDEX IF NOT EXISTS "UserSession_userId_idx" ON "UserSession"("userId");
+CREATE INDEX IF NOT EXISTS "UserSession_expiresAt_idx" ON "UserSession"("expiresAt");
+CREATE UNIQUE INDEX IF NOT EXISTS "CreditPack_slug_key" ON "CreditPack"("slug");
+CREATE INDEX IF NOT EXISTS "Purchase_bookingAccountId_idx" ON "Purchase"("bookingAccountId");
+CREATE INDEX IF NOT EXISTS "Purchase_userId_idx" ON "Purchase"("userId");
+CREATE INDEX IF NOT EXISTS "Purchase_createdAt_idx" ON "Purchase"("createdAt");
+CREATE UNIQUE INDEX IF NOT EXISTS "EmailSubscriber_email_key" ON "EmailSubscriber"("email");
 
 -- AddForeignKey
-ALTER TABLE "User" ADD CONSTRAINT "User_bookingAccountId_fkey" FOREIGN KEY ("bookingAccountId") REFERENCES "Client"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+DO $$
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'User_bookingAccountId_fkey') THEN
+    ALTER TABLE "User" ADD CONSTRAINT "User_bookingAccountId_fkey"
+      FOREIGN KEY ("bookingAccountId") REFERENCES "Client"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+  END IF;
+END $$;
 
--- AddForeignKey
-ALTER TABLE "UserSession" ADD CONSTRAINT "UserSession_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+DO $$
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'UserSession_userId_fkey') THEN
+    ALTER TABLE "UserSession" ADD CONSTRAINT "UserSession_userId_fkey"
+      FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+  END IF;
+END $$;
 
--- AddForeignKey
-ALTER TABLE "Purchase" ADD CONSTRAINT "Purchase_bookingAccountId_fkey" FOREIGN KEY ("bookingAccountId") REFERENCES "Client"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+DO $$
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'Purchase_bookingAccountId_fkey') THEN
+    ALTER TABLE "Purchase" ADD CONSTRAINT "Purchase_bookingAccountId_fkey"
+      FOREIGN KEY ("bookingAccountId") REFERENCES "Client"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+  END IF;
+END $$;
 
--- AddForeignKey
-ALTER TABLE "Purchase" ADD CONSTRAINT "Purchase_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+DO $$
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'Purchase_userId_fkey') THEN
+    ALTER TABLE "Purchase" ADD CONSTRAINT "Purchase_userId_fkey"
+      FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+  END IF;
+END $$;
 
--- AddForeignKey
-ALTER TABLE "Purchase" ADD CONSTRAINT "Purchase_creditPackId_fkey" FOREIGN KEY ("creditPackId") REFERENCES "CreditPack"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+DO $$
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'Purchase_creditPackId_fkey') THEN
+    ALTER TABLE "Purchase" ADD CONSTRAINT "Purchase_creditPackId_fkey"
+      FOREIGN KEY ("creditPackId") REFERENCES "CreditPack"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+  END IF;
+END $$;
