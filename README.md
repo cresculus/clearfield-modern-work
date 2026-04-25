@@ -58,11 +58,11 @@ git push -u origin master
 2. **New project → Deploy from GitHub** → pick the repo.
 3. **Add Postgres:** In the project canvas, **New** → **Database** → **PostgreSQL**. Railway creates `DATABASE_URL` on the plugin.
 4. **Link DB to the app:** On your **Next.js service** → **Variables** → **Add variable** → **Add reference** → choose the Postgres service → `DATABASE_URL` (same name). This must exist on the **web service** so runtime and builds see it.
-5. **Build-time DB:** On that `DATABASE_URL` variable, enable **“Available at build time”** (or Railway’s equivalent) so `prisma migrate deploy` can run during the image build. If the build cannot reach the DB, set the Railway build command to run migrations at **deploy start** instead (see below).
+5. **Build-time DB:** Not required with current scripts. Build does **not** run migrations. Migrations run at service start (`npm run start`) inside Railway private networking.
 6. **Root directory:** If the repo is not only this app, set **Root Directory** in the service settings to `clearfield-modern-work` (or wherever this `package.json` lives).
-7. **Build / start:** The build runs `npm install` (`postinstall` → `prisma generate`) then `npm run build` → `prisma migrate deploy && next build`. **`npm run start`** runs **`prisma migrate deploy && next start`** so tables are applied even if the build step could not reach the database. `prisma` is a **runtime dependency** for that reason. Next listens on **`PORT`** (Railway sets it).
+7. **Build / start:** The build runs `npm install` (`postinstall` → `prisma generate`) then `npm run build` → `next build`. **`npm run start`** runs **`prisma migrate deploy && next start`** so migrations happen at container startup where Railway can reach Postgres. `prisma` is a runtime dependency for that reason. Next listens on **`PORT`** (Railway sets it).
 
-**Optional:** If migrations must run only when the container starts (not during build), change the service **Build Command** to `npm run build:next` and add a script that runs `prisma migrate deploy` before `next start` (e.g. a small `scripts/start.sh`). Most Railway + Prisma setups keep `migrate deploy` in the build step with `DATABASE_URL` available at build time.
+This repo now uses start-time migrations by default to avoid build-network DB failures on Railway.
 
 After deploy, open the generated **`.up.railway.app`** URL and test **Book**.
 
@@ -71,7 +71,7 @@ After deploy, open the generated **`.up.railway.app`** URL and test **Book**.
 1. **Variable on the web service:** Open the **clearfield-modern-work** service (not only the Postgres plugin) → **Variables**. You must see **`DATABASE_URL`** there, usually as a reference: `${{Postgres.DATABASE_URL}}`. If it only exists on Postgres, the app container never receives it—add it with **Add variable → Variable reference**.
 2. **Redeploy:** After adding or changing variables, trigger a **new deployment** (Redeploy). Env changes do not always apply to already-running containers.
 3. **Old build:** If Prisma errors mention **`provider = "sqlite"`**, Railway is still running an **old image** from before the repo switched to PostgreSQL. Confirm the deployment’s **Git commit** matches your latest `master`, then redeploy. **Watchdog:** Settings → clear stale build cache if Railway offers it, or push an empty commit to force a rebuild.
-4. **Build-time:** Keep **“Available at build time”** enabled on `DATABASE_URL` so `prisma migrate deploy` can run during `npm run build`.
+4. **Start-time migrations:** Ensure `DATABASE_URL` is present on the web service so `npm run start` can run `prisma migrate deploy` before Next starts.
 
 ## Production notes
 
