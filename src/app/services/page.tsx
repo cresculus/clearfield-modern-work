@@ -9,41 +9,40 @@ export const metadata: Metadata = {
 
 export default function ServicesPage() {
   return (
-    <div className="mx-auto max-w-5xl px-4 py-14 sm:px-6">
-      <p className="text-sm font-semibold uppercase tracking-widest text-amber-700 dark:text-amber-400">Services</p>
-      <h1 className="mt-2 text-4xl font-bold tracking-tight text-zinc-900 dark:text-white">
-        Microsoft 365 &amp; Modern Work scope
-      </h1>
-      <p className="mt-4 max-w-2xl text-lg leading-relaxed text-zinc-600 dark:text-zinc-300">
-        Clearfield combines advisory clarity with hands-on delivery across identity, endpoints, security, and virtual
-        desktop—so your team ships faster with fewer surprises.
-      </p>
+    <div className="hero-grid">
+      <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
+        <p className="text-sm font-semibold uppercase tracking-widest text-fuchsia-300">Services</p>
+        <h1 className="mt-2 text-4xl font-bold tracking-tight text-white">Microsoft 365 execution scope</h1>
+        <p className="mt-4 max-w-2xl text-base leading-relaxed text-zinc-300">
+          Focused consulting across identity, endpoint management, security, and AVD.
+        </p>
 
-      <ul className="mt-12 grid gap-5 sm:grid-cols-2">
+      <ul className="mt-10 grid gap-5 md:grid-cols-3">
         {SERVICES.map((s) => (
           <li
             key={s.title}
-            className="group rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm transition hover:border-amber-300/60 hover:shadow-lg dark:border-zinc-800 dark:bg-zinc-900/60 dark:hover:border-amber-700/40"
+            className="glass rounded-2xl p-5 transition hover:translate-y-[-2px]"
           >
-            <h2 className="text-lg font-semibold text-zinc-900 dark:text-white">{s.title}</h2>
-            <p className="mt-3 text-sm leading-relaxed text-zinc-600 dark:text-zinc-300">{s.body}</p>
+            <h2 className="text-lg font-semibold text-white">{s.title}</h2>
+            <p className="mt-3 text-sm leading-relaxed text-zinc-300">{s.body}</p>
           </li>
         ))}
       </ul>
 
-      <div className="mt-14 flex flex-wrap gap-4">
+      <div className="mt-12 flex flex-wrap gap-4">
         <Link
           href="/book"
-          className="inline-flex rounded-full bg-amber-500 px-6 py-3 text-sm font-semibold text-zinc-950 shadow-md hover:bg-amber-400"
+          className="inline-flex rounded-full bg-gradient-to-r from-fuchsia-500 to-indigo-500 px-6 py-3 text-sm font-semibold text-white hover:opacity-90"
         >
-          Book a session
+          Book now
         </Link>
         <Link
           href="/how-it-works"
-          className="inline-flex rounded-full border border-zinc-300 px-6 py-3 text-sm font-semibold text-zinc-800 hover:bg-zinc-50 dark:border-zinc-600 dark:text-zinc-100 dark:hover:bg-zinc-800"
+          className="inline-flex rounded-full border border-white/20 bg-white/5 px-6 py-3 text-sm font-semibold text-zinc-100 hover:bg-white/10"
         >
-          How booking works
+          See flow
         </Link>
+      </div>
       </div>
     </div>
   );

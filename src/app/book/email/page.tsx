@@ -42,16 +42,16 @@ export default function BookEmailPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-xl font-semibold text-zinc-900 dark:text-white">Account check</h2>
-        <p className="mt-2 text-sm leading-relaxed text-zinc-600 dark:text-zinc-300">
+        <h2 className="text-xl font-semibold text-white">Account check</h2>
+        <p className="mt-2 text-sm leading-relaxed text-zinc-300">
           Booking is tied to your signed-in account so credits and sessions stay synced.
         </p>
       </div>
 
-      {loading && <p className="text-sm text-zinc-500">Checking session…</p>}
+      {loading && <p className="text-sm text-zinc-400">Checking session…</p>}
 
       {error && (
-        <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-900 dark:border-red-900/60 dark:bg-red-950/40 dark:text-red-100">
+        <p className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-200">
           {error}
         </p>
       )}
@@ -60,14 +60,14 @@ export default function BookEmailPage() {
         <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:justify-between">
           <Link
             href="/book"
-            className="inline-flex items-center justify-center rounded-full border border-zinc-300 px-5 py-2.5 text-sm font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-600 dark:text-zinc-200 dark:hover:bg-zinc-800"
+            className="inline-flex items-center justify-center rounded-full border border-white/20 px-5 py-2.5 text-sm font-medium text-zinc-200 hover:bg-white/10"
           >
             Back
           </Link>
           <button
             type="button"
             onClick={() => void goToAccount()}
-            className="inline-flex items-center justify-center rounded-full bg-amber-500 px-6 py-2.5 text-sm font-semibold text-zinc-950 shadow-md transition hover:bg-amber-400"
+            className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-fuchsia-500 to-indigo-500 px-6 py-2.5 text-sm font-semibold text-white transition hover:opacity-90"
           >
             Go to account
           </button>

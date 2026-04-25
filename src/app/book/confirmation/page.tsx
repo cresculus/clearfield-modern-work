@@ -21,26 +21,26 @@ export default function BookConfirmationPage() {
   }, [router]);
 
   if (!booking) {
-    return <p className="text-sm text-zinc-500">Loading…</p>;
+    return <p className="text-sm text-zinc-400">Loading…</p>;
   }
 
   return (
     <div className="space-y-6 text-center">
-      <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-500 text-2xl text-white shadow-lg shadow-emerald-500/30">
+      <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-r from-fuchsia-500 to-indigo-500 text-2xl text-white shadow-lg shadow-fuchsia-500/30">
         ✓
       </div>
       <div>
-        <h2 className="text-2xl font-bold text-zinc-900 dark:text-white">You are booked</h2>
-        <p className="mt-3 text-sm leading-relaxed text-zinc-600 dark:text-zinc-300">
+        <h2 className="text-2xl font-bold text-white">You are booked</h2>
+        <p className="mt-3 text-sm leading-relaxed text-zinc-300">
           Session type:{" "}
-          <strong className="text-zinc-900 dark:text-white">
+          <strong className="text-white">
             {booking.kind === "intro" ? "Intro (welcome credit)" : "Consulting session"}
           </strong>
           <br />
           Time:{" "}
-          <strong className="text-zinc-900 dark:text-white">{formatSlotEt(booking.startsAt)}</strong>
+          <strong className="text-white">{formatSlotEt(booking.startsAt)}</strong>
         </p>
-        <p className="mt-4 text-xs text-zinc-500 dark:text-zinc-400">
+        <p className="mt-4 text-xs text-zinc-400">
           Calendar invites are not automated in this MVP—watch your inbox for a follow-up from Clearfield, or reach out
           on the Contact page.
         </p>
@@ -48,13 +48,13 @@ export default function BookConfirmationPage() {
       <div className="flex flex-col justify-center gap-3 pt-4 sm:flex-row">
         <Link
           href="/book/schedule"
-          className="inline-flex items-center justify-center rounded-full border border-zinc-300 px-6 py-2.5 text-sm font-semibold text-zinc-800 hover:bg-zinc-50 dark:border-zinc-600 dark:text-zinc-100 dark:hover:bg-zinc-800"
+          className="inline-flex items-center justify-center rounded-full border border-white/20 px-6 py-2.5 text-sm font-semibold text-zinc-100 hover:bg-white/10"
         >
           Book another time
         </Link>
         <Link
           href="/"
-          className="inline-flex items-center justify-center rounded-full bg-zinc-900 px-6 py-2.5 text-sm font-semibold text-white hover:bg-zinc-800 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-100"
+          className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-fuchsia-500 to-indigo-500 px-6 py-2.5 text-sm font-semibold text-white hover:opacity-90"
         >
           Back to home
         </Link>

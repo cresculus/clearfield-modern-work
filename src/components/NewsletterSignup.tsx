@@ -31,7 +31,7 @@ export function NewsletterSignup() {
   return (
     <form onSubmit={(e) => void submit(e)} className="mt-4 grid gap-2 sm:grid-cols-[1fr_1fr_auto]">
       <input
-        className="rounded-lg border px-3 py-2 bg-white dark:bg-zinc-900"
+        className="rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-white placeholder:text-zinc-400"
         placeholder="Name"
         value={name}
         onChange={(e) => setName(e.target.value)}
@@ -39,14 +39,16 @@ export function NewsletterSignup() {
       <input
         required
         type="email"
-        className="rounded-lg border px-3 py-2 bg-white dark:bg-zinc-900"
+        className="rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-white placeholder:text-zinc-400"
         placeholder="you@company.com"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
-      <button className="rounded-full bg-amber-500 px-4 py-2 font-semibold text-zinc-950">Join list</button>
+      <button className="rounded-full bg-gradient-to-r from-fuchsia-500 to-indigo-500 px-4 py-2 font-semibold text-white">
+        Join
+      </button>
       {state !== "idle" && (
-        <p className={`text-sm ${state === "ok" ? "text-emerald-700" : "text-red-700"}`}>{msg}</p>
+        <p className={`text-sm ${state === "ok" ? "text-emerald-300" : "text-red-300"}`}>{msg}</p>
       )}
     </form>
   );

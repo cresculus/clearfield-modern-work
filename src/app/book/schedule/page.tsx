@@ -123,36 +123,36 @@ export default function BookSchedulePage() {
     <div className="space-y-6">
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-start">
         <div>
-          <h2 className="text-xl font-semibold text-zinc-900 dark:text-white">Choose a time</h2>
-          <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-300">
-            Logged in as <span className="font-medium text-zinc-900 dark:text-white">{email}</span>
+          <h2 className="text-xl font-semibold text-white">Choose a time</h2>
+          <p className="mt-2 text-sm text-zinc-300">
+            Signed in as <span className="font-medium text-white">{email}</span>
           </p>
         </div>
-        <div className="rounded-xl border border-zinc-200 bg-zinc-50 px-4 py-3 text-right dark:border-zinc-700 dark:bg-zinc-950/60">
-          <p className="text-xs font-medium uppercase tracking-wide text-zinc-500 dark:text-zinc-400">Credits</p>
-          <p className="text-2xl font-bold tabular-nums text-zinc-900 dark:text-white">{balance ?? "—"}</p>
+        <div className="glass rounded-xl px-4 py-3 text-right">
+          <p className="text-xs font-medium uppercase tracking-wide text-zinc-400">Credits</p>
+          <p className="text-2xl font-bold tabular-nums text-white">{balance ?? "—"}</p>
           {isNew && (
-            <p className="mt-1 text-xs font-medium text-emerald-700 dark:text-emerald-400">Includes welcome credit</p>
+            <p className="mt-1 text-xs font-medium text-emerald-300">Includes welcome credit</p>
           )}
         </div>
       </div>
 
-      {loading && <p className="text-sm text-zinc-500">Loading open times…</p>}
+      {loading && <p className="text-sm text-zinc-400">Loading open times…</p>}
       {error && (
-        <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-900 dark:border-red-900/60 dark:bg-red-950/40 dark:text-red-100">
+        <p className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-200">
           {error}
         </p>
       )}
 
       {!loading && zeroCredits && (
-        <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-950 dark:border-amber-900/50 dark:bg-amber-950/30 dark:text-amber-50">
+        <div className="rounded-xl border border-amber-400/30 bg-amber-500/10 p-4 text-sm text-amber-200">
           <p className="font-medium">You need more credits</p>
-          <p className="mt-2 text-amber-900/90 dark:text-amber-100/90">
+          <p className="mt-2 text-amber-100/90">
             Buy a credit pack from your account page, then come back here to book.
           </p>
           <Link
             href="/account"
-            className="mt-3 inline-flex rounded-full bg-amber-500 px-4 py-2 text-xs font-semibold text-zinc-950"
+            className="mt-3 inline-flex rounded-full bg-gradient-to-r from-fuchsia-500 to-indigo-500 px-4 py-2 text-xs font-semibold text-white"
           >
             Go to account
           </Link>
@@ -167,10 +167,10 @@ export default function BookSchedulePage() {
                 type="button"
                 disabled={booking}
                 onClick={() => void pickSlot(s.startsAt)}
-                className="flex w-full flex-col items-start rounded-xl border border-zinc-200 bg-white px-4 py-3 text-left text-sm shadow-sm transition hover:border-amber-400 hover:shadow-md disabled:opacity-50 dark:border-zinc-700 dark:bg-zinc-950 dark:hover:border-amber-500"
+                className="glass flex w-full flex-col items-start rounded-xl px-4 py-3 text-left text-sm transition hover:border-fuchsia-400/40 disabled:opacity-50"
               >
-                <span className="font-semibold text-zinc-900 dark:text-white">{formatSlotEt(s.startsAt)}</span>
-                <span className="mt-1 text-xs text-amber-700 dark:text-amber-400">Reserve this slot →</span>
+                <span className="font-semibold text-white">{formatSlotEt(s.startsAt)}</span>
+                <span className="mt-1 text-xs text-fuchsia-300">Reserve this slot →</span>
               </button>
             </li>
           ))}
@@ -179,7 +179,7 @@ export default function BookSchedulePage() {
 
       <Link
         href="/account"
-        className="inline-block text-sm font-medium text-zinc-500 underline hover:text-zinc-800 dark:hover:text-zinc-200"
+        className="inline-block text-sm font-medium text-zinc-400 underline hover:text-zinc-200"
       >
         Switch account
       </Link>
