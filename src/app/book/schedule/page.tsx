@@ -41,9 +41,12 @@ export default function BookSchedulePage() {
 
   useEffect(() => {
     const em = readBookingEmail();
-    setEmail(em);
-    setBalance(readBookingBalance());
-    setIsNew(readBookingIsNew());
+    // Client-only: hydrate wizard state from sessionStorage after mount (no SSR access).
+    queueMicrotask(() => {
+      setEmail(em);
+      setBalance(readBookingBalance());
+      setIsNew(readBookingIsNew());
+    });
     if (!em) {
       router.replace("/book/email");
       return;

@@ -22,7 +22,7 @@ export default function BookConfirmationPage() {
       router.replace("/book/schedule");
       return;
     }
-    setBooking(b);
+    queueMicrotask(() => setBooking(b));
   }, [router]);
 
   if (!booking) {
