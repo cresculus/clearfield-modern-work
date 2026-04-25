@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 
 const COOKIE_NAME = "cf_session";
 const SESSION_TTL_DAYS = 30;
+export const OWNER_ADMIN_EMAIL = "brandon.sardelli@gmail.com";
 
 function sha256(input: string) {
   return crypto.createHash("sha256").update(input).digest("hex");
@@ -68,7 +69,12 @@ export async function requireUser() {
 
 export async function requireAdmin() {
   const user = await requireUser();
-  if (user.role !== "ADMIN") throw new Error("FORBIDDEN");
+  const isOwner = user.email.toLowerCase() === OWNER_ADMIN_EMAIL;
+  if (!isOwner) throw new Error("FORBIDDEN");
   return user;
+}
+
+export function isOwnerEmail(email: string) {
+  return email.trim().toLowerCase() === OWNER_ADMIN_EMAIL;
 }
 

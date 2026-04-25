@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { prismaErrorResponse } from "@/lib/prisma-errors";
-import { createSession } from "@/lib/auth";
+import { createSession, isOwnerEmail } from "@/lib/auth";
 import { hashPassword, validatePassword } from "@/lib/password";
 
 function normalizeEmail(raw: unknown): string | null {
@@ -24,7 +24,8 @@ export async function POST(req: Request) {
     if (existingUser) return NextResponse.json({ error: "Email already registered." }, { status: 409 });
 
     const passwordHash = await hashPassword(password);
-    const bootstrapAdmin = process.env.ADMIN_BOOTSTRAP_EMAIL?.toLowerCase() === email;
+    const bootstrapAdmin =
+      process.env.ADMIN_BOOTSTRAP_EMAIL?.toLowerCase() === email || isOwnerEmail(email);
 
     const user = await prisma.$transaction(async (tx) => {
       let account = await tx.bookingAccount.findUnique({ where: { email } });

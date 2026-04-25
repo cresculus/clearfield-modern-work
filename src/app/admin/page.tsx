@@ -73,36 +73,36 @@ export default function AdminPage() {
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-14 sm:px-6">
-      <h1 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-white">Admin</h1>
-      <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-300">Manage packs, monitor users, subscribers, and purchases.</p>
-      {error && <p className="mt-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-800">{error}</p>}
+      <h1 className="text-3xl font-bold tracking-tight text-white">Admin</h1>
+      <p className="mt-2 text-sm text-zinc-300">Owner dashboard</p>
+      {error && <p className="mt-4 rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-sm text-red-200">{error}</p>}
 
       {overview && (
         <div className="mt-6 grid gap-3 sm:grid-cols-5">
           {Object.entries(overview).map(([k, v]) => (
-            <div key={k} className="rounded-xl border border-zinc-200 bg-white p-4 text-center dark:border-zinc-800 dark:bg-zinc-900/50">
-              <p className="text-xs uppercase tracking-wide text-zinc-500">{k}</p>
-              <p className="mt-1 text-2xl font-bold">{v}</p>
+            <div key={k} className="glass rounded-xl p-4 text-center">
+              <p className="text-xs uppercase tracking-wide text-zinc-400">{k}</p>
+              <p className="mt-1 text-2xl font-bold text-white">{v}</p>
             </div>
           ))}
         </div>
       )}
 
-      <section className="mt-8 rounded-2xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900/50">
-        <h2 className="font-semibold">Credit packs</h2>
+      <section className="glass mt-8 rounded-2xl p-6">
+        <h2 className="font-semibold text-white">Credit packs</h2>
         <ul className="mt-4 space-y-2">
           {packs.map((p) => (
-            <li key={p.id} className="rounded-lg border border-zinc-200 px-3 py-2 text-sm dark:border-zinc-700">
+            <li key={p.id} className="rounded-lg border border-white/10 px-3 py-2 text-sm text-zinc-200">
               {p.title} ({p.slug}) - {p.credits} credits - ${(p.priceCents / 100).toFixed(2)}
             </li>
           ))}
         </ul>
         <div className="mt-5 grid gap-2 sm:grid-cols-5">
-          <input className="rounded-lg border px-2 py-1.5 bg-white dark:bg-zinc-900" placeholder="slug" value={form.slug} onChange={(e) => setForm({ ...form, slug: e.target.value })} />
-          <input className="rounded-lg border px-2 py-1.5 bg-white dark:bg-zinc-900" placeholder="title" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} />
-          <input className="rounded-lg border px-2 py-1.5 bg-white dark:bg-zinc-900" placeholder="credits" value={form.credits} onChange={(e) => setForm({ ...form, credits: e.target.value })} />
-          <input className="rounded-lg border px-2 py-1.5 bg-white dark:bg-zinc-900" placeholder="priceCents" value={form.priceCents} onChange={(e) => setForm({ ...form, priceCents: e.target.value })} />
-          <button onClick={() => void savePack()} className="rounded-full bg-amber-500 px-4 py-2 text-sm font-semibold text-zinc-950">Save pack</button>
+          <input className="rounded-lg border border-white/15 bg-white/5 px-2 py-1.5 text-white placeholder:text-zinc-400" placeholder="slug" value={form.slug} onChange={(e) => setForm({ ...form, slug: e.target.value })} />
+          <input className="rounded-lg border border-white/15 bg-white/5 px-2 py-1.5 text-white placeholder:text-zinc-400" placeholder="title" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} />
+          <input className="rounded-lg border border-white/15 bg-white/5 px-2 py-1.5 text-white placeholder:text-zinc-400" placeholder="credits" value={form.credits} onChange={(e) => setForm({ ...form, credits: e.target.value })} />
+          <input className="rounded-lg border border-white/15 bg-white/5 px-2 py-1.5 text-white placeholder:text-zinc-400" placeholder="priceCents" value={form.priceCents} onChange={(e) => setForm({ ...form, priceCents: e.target.value })} />
+          <button onClick={() => void savePack()} className="rounded-full bg-gradient-to-r from-fuchsia-500 to-indigo-500 px-4 py-2 text-sm font-semibold text-white">Save</button>
         </div>
       </section>
     </div>

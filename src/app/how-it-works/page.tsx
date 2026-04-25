@@ -28,39 +28,33 @@ const steps = [
 export default function HowItWorksPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-14 sm:px-6">
-      <h1 className="text-4xl font-bold tracking-tight text-zinc-900 dark:text-white">How it works</h1>
-      <p className="mt-4 text-lg leading-relaxed text-zinc-600 dark:text-zinc-300">
-        Clearfield is built for busy IT leaders who need sharp Microsoft 365 execution—not generic slide decks.
-      </p>
+      <h1 className="text-4xl font-bold tracking-tight text-white">Flow</h1>
+      <p className="mt-4 text-lg leading-relaxed text-zinc-300">Simple, fast, no fluff.</p>
 
       <ol className="mt-12 space-y-6">
         {steps.map((s) => (
           <li
             key={s.title}
-            className="rounded-2xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900/50"
+            className="glass rounded-2xl p-6"
           >
-            <h2 className="text-lg font-semibold text-zinc-900 dark:text-white">{s.title}</h2>
-            <p className="mt-2 text-sm leading-relaxed text-zinc-600 dark:text-zinc-300">{s.body}</p>
+            <h2 className="text-lg font-semibold text-white">{s.title}</h2>
+            <p className="mt-2 text-sm leading-relaxed text-zinc-300">{s.body}</p>
           </li>
         ))}
       </ol>
 
-      <section className="mt-12 rounded-2xl border border-zinc-200 bg-zinc-50 p-6 dark:border-zinc-800 dark:bg-zinc-950/50">
-        <h2 className="font-semibold text-zinc-900 dark:text-white">Credits &amp; packs</h2>
-        <p className="mt-2 text-sm leading-relaxed text-zinc-600 dark:text-zinc-300">
-          After your welcome credit, you add credits (today via a secured dev API; production typically uses Stripe).
-          One credit equals one scheduled block.
-        </p>
-        <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-zinc-600 dark:text-zinc-300">
+      <section className="glass mt-12 rounded-2xl p-6">
+        <h2 className="font-semibold text-white">Credits</h2>
+        <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-zinc-300">
           <li>1 credit = 45-minute session + brief written next-steps summary.</li>
-          <li>Best-effort response target for booked sessions: within one business day.</li>
+          <li>Booked-session response target: one business day.</li>
           <li>Managed/on-call operations are out-of-scope unless explicitly contracted.</li>
         </ul>
       </section>
 
       <Link
         href="/book"
-        className="mt-10 inline-flex rounded-full bg-amber-500 px-6 py-3 text-sm font-semibold text-zinc-950 hover:bg-amber-400"
+        className="mt-10 inline-flex rounded-full bg-gradient-to-r from-fuchsia-500 to-indigo-500 px-6 py-3 text-sm font-semibold text-white hover:opacity-90"
       >
         Start booking
       </Link>

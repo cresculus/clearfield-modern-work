@@ -113,62 +113,57 @@ export default function AccountPage() {
   }
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-14 sm:px-6">
-      <h1 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-white">Account & Credits</h1>
-      <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-300">
-        Basic SaaS account setup, authentication, and consulting credit purchases.
-      </p>
+    <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
+      <h1 className="text-3xl font-bold tracking-tight text-white">Account & Credits</h1>
+      <p className="mt-2 text-sm text-zinc-300">Use Gmail or any work email.</p>
 
-      {error && <p className="mt-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-800">{error}</p>}
-      {message && <p className="mt-4 rounded-lg bg-emerald-50 px-3 py-2 text-sm text-emerald-800">{message}</p>}
+      {error && <p className="mt-4 rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-sm text-red-200">{error}</p>}
+      {message && <p className="mt-4 rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-sm text-emerald-200">{message}</p>}
 
       {!me.authenticated ? (
         <div className="mt-8 grid gap-6 md:grid-cols-2">
-          <section className="rounded-2xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900/50">
-            <h2 className="font-semibold">Create account</h2>
+          <section className="glass rounded-2xl p-6">
+            <h2 className="font-semibold text-white">Register</h2>
             <div className="mt-4 space-y-3">
-              <input className="w-full rounded-lg border px-3 py-2 bg-white dark:bg-zinc-900" placeholder="Full name" value={fullName} onChange={(e) => setFullName(e.target.value)} />
-              <input className="w-full rounded-lg border px-3 py-2 bg-white dark:bg-zinc-900" placeholder="Company" value={company} onChange={(e) => setCompany(e.target.value)} />
-              <input className="w-full rounded-lg border px-3 py-2 bg-white dark:bg-zinc-900" placeholder="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-              <input className="w-full rounded-lg border px-3 py-2 bg-white dark:bg-zinc-900" placeholder="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-              <button disabled={loading} onClick={() => void register()} className="rounded-full bg-amber-500 px-4 py-2 font-semibold text-zinc-950">Register</button>
+              <input className="w-full rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-white placeholder:text-zinc-400" placeholder="Full name" value={fullName} onChange={(e) => setFullName(e.target.value)} />
+              <input className="w-full rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-white placeholder:text-zinc-400" placeholder="Company" value={company} onChange={(e) => setCompany(e.target.value)} />
+              <input className="w-full rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-white placeholder:text-zinc-400" placeholder="Email (gmail or work)" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+              <input className="w-full rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-white placeholder:text-zinc-400" placeholder="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+              <button disabled={loading} onClick={() => void register()} className="rounded-full bg-gradient-to-r from-fuchsia-500 to-indigo-500 px-4 py-2 font-semibold text-white">Create account</button>
             </div>
           </section>
 
-          <section className="rounded-2xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900/50">
-            <h2 className="font-semibold">Sign in</h2>
+          <section className="glass rounded-2xl p-6">
+            <h2 className="font-semibold text-white">Sign in</h2>
             <div className="mt-4 space-y-3">
-              <input className="w-full rounded-lg border px-3 py-2 bg-white dark:bg-zinc-900" placeholder="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-              <input className="w-full rounded-lg border px-3 py-2 bg-white dark:bg-zinc-900" placeholder="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-              <button disabled={loading} onClick={() => void login()} className="rounded-full bg-zinc-900 px-4 py-2 font-semibold text-white dark:bg-zinc-100 dark:text-zinc-900">Sign in</button>
+              <input className="w-full rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-white placeholder:text-zinc-400" placeholder="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+              <input className="w-full rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-white placeholder:text-zinc-400" placeholder="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+              <button disabled={loading} onClick={() => void login()} className="rounded-full border border-white/20 bg-white/10 px-4 py-2 font-semibold text-white">Sign in</button>
             </div>
           </section>
         </div>
       ) : (
         <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_2fr]">
-          <section className="rounded-2xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900/50">
-            <h2 className="font-semibold">Profile</h2>
-            <p className="mt-3 text-sm">{me.user?.email}</p>
-            <p className="mt-2 text-sm">Role: {me.user?.role}</p>
-            <p className="mt-2 text-2xl font-bold">Credits: {me.user?.account.creditBalance ?? 0}</p>
-            <button onClick={() => void logout()} className="mt-4 rounded-full border px-4 py-2 text-sm">Sign out</button>
+          <section className="glass rounded-2xl p-6">
+            <h2 className="font-semibold text-white">Profile</h2>
+            <p className="mt-3 text-sm text-zinc-300">{me.user?.email}</p>
+            <p className="mt-2 text-sm text-zinc-400">{me.user?.role}</p>
+            <p className="mt-2 text-3xl font-bold text-white">{me.user?.account.creditBalance ?? 0} credits</p>
+            <button onClick={() => void logout()} className="mt-4 rounded-full border border-white/20 px-4 py-2 text-sm text-zinc-200">Sign out</button>
           </section>
 
-          <section className="rounded-2xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900/50">
-            <h2 className="font-semibold">Purchase credits</h2>
-            <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-300">MVP mode uses manual purchase API; replace with Stripe checkout next.</p>
-            <div className="mt-3 rounded-lg border border-zinc-200 bg-zinc-50 p-3 text-xs leading-relaxed text-zinc-700 dark:border-zinc-700 dark:bg-zinc-900/60 dark:text-zinc-300">
-              <p><strong>1 credit includes:</strong> one 45-minute consulting session.</p>
-              <p className="mt-1"><strong>Delivery:</strong> concise action summary after each session.</p>
-              <p className="mt-1"><strong>Not included:</strong> managed services/on-call support unless separately agreed.</p>
+          <section className="glass rounded-2xl p-6">
+            <h2 className="font-semibold text-white">Buy credits</h2>
+            <div className="mt-3 rounded-lg border border-white/10 bg-white/5 p-3 text-xs leading-relaxed text-zinc-300">
+              <p><strong>1 credit:</strong> one 45-minute session + short action summary.</p>
             </div>
             <ul className="mt-4 grid gap-3 sm:grid-cols-2">
               {packs.map((p) => (
-                <li key={p.id} className="rounded-xl border border-zinc-200 p-4 dark:border-zinc-700">
-                  <p className="font-medium">{p.title}</p>
-                  <p className="mt-1 text-sm">{p.credits} credits</p>
-                  <p className="mt-1 text-sm">${(p.priceCents / 100).toFixed(2)}</p>
-                  <button disabled={loading} onClick={() => void buyPack(p.id)} className="mt-3 rounded-full bg-amber-500 px-3 py-1.5 text-sm font-semibold text-zinc-950">Buy</button>
+                <li key={p.id} className="rounded-xl border border-white/10 bg-white/5 p-4">
+                  <p className="font-medium text-white">{p.title}</p>
+                  <p className="mt-1 text-sm text-zinc-300">{p.credits} credits</p>
+                  <p className="mt-1 text-sm text-zinc-300">${(p.priceCents / 100).toFixed(2)}</p>
+                  <button disabled={loading} onClick={() => void buyPack(p.id)} className="mt-3 rounded-full bg-gradient-to-r from-fuchsia-500 to-indigo-500 px-3 py-1.5 text-sm font-semibold text-white">Buy</button>
                 </li>
               ))}
             </ul>
