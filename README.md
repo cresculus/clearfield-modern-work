@@ -60,7 +60,7 @@ git push -u origin master
 4. **Link DB to the app:** On your **Next.js service** → **Variables** → **Add variable** → **Add reference** → choose the Postgres service → `DATABASE_URL` (same name). This must exist on the **web service** so runtime and builds see it.
 5. **Build-time DB:** On that `DATABASE_URL` variable, enable **“Available at build time”** (or Railway’s equivalent) so `prisma migrate deploy` can run during the image build. If the build cannot reach the DB, set the Railway build command to run migrations at **deploy start** instead (see below).
 6. **Root directory:** If the repo is not only this app, set **Root Directory** in the service settings to `clearfield-modern-work` (or wherever this `package.json` lives).
-7. **Build / start:** This repo includes `railway.toml`. The build runs `npm install` (which runs `postinstall` → `prisma generate`) then `npm run build` → `prisma migrate deploy && next build`. Start is `npm run start` (Next listens on **`PORT`** — Railway sets this automatically).
+7. **Build / start:** The build runs `npm install` (`postinstall` → `prisma generate`) then `npm run build` → `prisma migrate deploy && next build`. **`npm run start`** runs **`prisma migrate deploy && next start`** so tables are applied even if the build step could not reach the database. `prisma` is a **runtime dependency** for that reason. Next listens on **`PORT`** (Railway sets it).
 
 **Optional:** If migrations must run only when the container starts (not during build), change the service **Build Command** to `npm run build:next` and add a script that runs `prisma migrate deploy` before `next start` (e.g. a small `scripts/start.sh`). Most Railway + Prisma setups keep `migrate deploy` in the build step with `DATABASE_URL` available at build time.
 
@@ -75,6 +75,7 @@ After deploy, open the generated **`.up.railway.app`** URL and test **Book**.
 
 ## Production notes
 
+- **Prisma model:** The table is still named `Client` in Postgres; the Prisma model is **`BookingAccount`** (`@@map("Client")`) to avoid clashing with `PrismaClient` in some bundlers.
 - **Database:** PostgreSQL (Railway plugin or any host). `DATABASE_URL` must match Prisma’s `postgresql://…` format.
 - **Payments:** Replace `/api/credits/purchase-dev` with Stripe Checkout; on `checkout.session.completed`, insert positive `CreditLedger` rows and increment `creditBalance`.
 - **Calendar:** This MVP does not send calendar invites automatically—hook Microsoft Graph, Cal.com, or Calendly after checkout if you want native invites.

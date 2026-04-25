@@ -8,7 +8,8 @@ datasource db {
 }
 
 /// End client or prospect (identified by email for this MVP).
-model Client {
+/// Renamed from "Client" to avoid any runtime confusion with PrismaClient / fetch Client.
+model BookingAccount {
   id             String          @id @default(cuid())
   email          String          @unique
   creditBalance  Int             @default(0)
@@ -16,29 +17,30 @@ model Client {
   updatedAt      DateTime        @updatedAt
   ledgerEntries  CreditLedger[]
   bookings       Booking[]
+
+  @@map("Client")
 }
 
 model CreditLedger {
-  id        String   @id @default(cuid())
-  clientId  String
-  client    Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
-  delta     Int
-  reason    String
-  createdAt DateTime @default(now())
+  id         String         @id @default(cuid())
+  clientId   String
+  account    BookingAccount @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  delta      Int
+  reason     String
+  createdAt  DateTime       @default(now())
 
   @@index([clientId])
 }
 
 model Booking {
-  id        String   @id @default(cuid())
+  id        String         @id @default(cuid())
   clientId  String
-  client    Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  account    BookingAccount @relation(fields: [clientId], references: [id], onDelete: Cascade)
   startsAt  DateTime
   endsAt    DateTime
-  /// intro | paid — both consume one credit in MVP; label for your records.
-  kind      String   @default("paid")
-  status    String   @default("confirmed")
-  createdAt DateTime @default(now())
+  kind      String         @default("paid")
+  status    String         @default("confirmed")
+  createdAt DateTime       @default(now())
 
   @@unique([startsAt])
   @@index([clientId])

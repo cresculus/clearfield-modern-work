@@ -47,10 +47,10 @@ export async function POST(req: Request) {
       );
     }
 
-    const client = await prisma.client.findUnique({ where: { email } });
-    if (!client) {
+    const account = await prisma.bookingAccount.findUnique({ where: { email } });
+    if (!account) {
       return NextResponse.json(
-        { error: "Client not found — book once with this email first." },
+        { error: "Account not found — register with this email on the book flow first." },
         { status: 404 },
       );
     }
@@ -58,13 +58,13 @@ export async function POST(req: Request) {
     const updated = await prisma.$transaction(async (tx) => {
       await tx.creditLedger.create({
         data: {
-          clientId: client.id,
+          clientId: account.id,
           delta,
           reason: `purchase_dev_${pack}`,
         },
       });
-      return tx.client.update({
-        where: { id: client.id },
+      return tx.bookingAccount.update({
+        where: { id: account.id },
         data: { creditBalance: { increment: delta } },
       });
     });

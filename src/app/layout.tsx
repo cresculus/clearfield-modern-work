@@ -15,7 +15,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Clearfield — Microsoft 365 & Modern Work consulting",
+  title: {
+    default: "Clearfield — Microsoft 365 & Modern Work consulting",
+    template: "%s | Clearfield",
+  },
   description:
     "Hands-on Microsoft 365 consulting: Entra ID, Intune, Defender, AVD, baselines, and rollout execution.",
 };
@@ -30,16 +33,32 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full scroll-smooth antialiased`}
     >
-      <body className="flex min-h-full flex-col bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-50">
+      <body className="flex min-h-full flex-col bg-zinc-100 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-50">
         <SiteNav />
         <main className="flex-1">{children}</main>
-        <footer className="border-t border-zinc-200 py-8 text-center text-xs text-zinc-500 dark:border-zinc-800 dark:text-zinc-400">
-          <p>
-            Clearfield · Modern Work consulting ·{" "}
-            <Link href="/book" className="text-amber-700 hover:underline dark:text-amber-400">
-              Book
-            </Link>
-          </p>
+        <footer className="border-t border-zinc-200 bg-white py-10 dark:border-zinc-800 dark:bg-zinc-950">
+          <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-6 px-4 text-center sm:flex-row sm:px-6 sm:text-left">
+            <div>
+              <p className="text-sm font-semibold text-zinc-900 dark:text-white">Clearfield</p>
+              <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+                Modern Work consulting · Microsoft 365, identity, endpoints, security, AVD
+              </p>
+            </div>
+            <div className="flex flex-wrap items-center justify-center gap-4 text-xs font-medium text-zinc-600 dark:text-zinc-400">
+              <Link href="/services" className="hover:text-amber-700 dark:hover:text-amber-400">
+                Services
+              </Link>
+              <Link href="/how-it-works" className="hover:text-amber-700 dark:hover:text-amber-400">
+                How it works
+              </Link>
+              <Link href="/contact" className="hover:text-amber-700 dark:hover:text-amber-400">
+                Contact
+              </Link>
+              <Link href="/book" className="hover:text-amber-700 dark:hover:text-amber-400">
+                Book
+              </Link>
+            </div>
+          </div>
         </footer>
       </body>
     </html>

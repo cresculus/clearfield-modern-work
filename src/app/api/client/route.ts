@@ -9,7 +9,7 @@ function normalizeEmail(raw: unknown): string | null {
   return email;
 }
 
-/** Create-or-fetch client; new emails receive one welcome credit. */
+/** Create-or-fetch account; new emails receive one welcome credit. */
 export async function POST(req: Request) {
   try {
     const body = (await req.json()) as { email?: string };
@@ -18,7 +18,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Valid email required." }, { status: 400 });
     }
 
-    const existing = await prisma.client.findUnique({ where: { email } });
+    const existing = await prisma.bookingAccount.findUnique({ where: { email } });
     if (existing) {
       const bookings = await prisma.booking.findMany({
         where: { clientId: existing.id, status: "confirmed" },
@@ -38,8 +38,8 @@ export async function POST(req: Request) {
       });
     }
 
-    const client = await prisma.$transaction(async (tx) => {
-      const c = await tx.client.create({
+    const account = await prisma.$transaction(async (tx) => {
+      const a = await tx.bookingAccount.create({
         data: {
           email,
           creditBalance: 1,
@@ -47,17 +47,17 @@ export async function POST(req: Request) {
       });
       await tx.creditLedger.create({
         data: {
-          clientId: c.id,
+          clientId: a.id,
           delta: 1,
           reason: "welcome_free_credit",
         },
       });
-      return c;
+      return a;
     });
 
     return NextResponse.json({
-      email: client.email,
-      creditBalance: client.creditBalance,
+      email: account.email,
+      creditBalance: account.creditBalance,
       isNew: true,
       bookings: [] as const,
     });

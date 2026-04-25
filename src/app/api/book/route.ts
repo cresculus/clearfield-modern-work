@@ -32,11 +32,11 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "That slot is not offered." }, { status: 400 });
     }
 
-    const client = await prisma.client.findUnique({ where: { email } });
-    if (!client) {
+    const account = await prisma.bookingAccount.findUnique({ where: { email } });
+    if (!account) {
       return NextResponse.json({ error: "Unknown email — start on the book page." }, { status: 400 });
     }
-    if (client.creditBalance < 1) {
+    if (account.creditBalance < 1) {
       return NextResponse.json(
         { error: "No credits left. Purchase a credit pack to continue." },
         { status: 402 },
@@ -47,7 +47,7 @@ export async function POST(req: Request) {
 
     try {
       const result = await prisma.$transaction(async (tx) => {
-        const fresh = await tx.client.findUnique({ where: { id: client.id } });
+        const fresh = await tx.bookingAccount.findUnique({ where: { id: account.id } });
         if (!fresh || fresh.creditBalance < 1) {
           throw new Error("NO_CREDIT");
         }
@@ -67,7 +67,7 @@ export async function POST(req: Request) {
           },
         });
 
-        await tx.client.update({
+        await tx.bookingAccount.update({
           where: { id: fresh.id },
           data: { creditBalance: { decrement: 1 } },
         });
@@ -83,7 +83,7 @@ export async function POST(req: Request) {
         return booking;
       });
 
-      const updated = await prisma.client.findUniqueOrThrow({ where: { id: client.id } });
+      const updated = await prisma.bookingAccount.findUniqueOrThrow({ where: { id: account.id } });
 
       return NextResponse.json({
         booking: {
