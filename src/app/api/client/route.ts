@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { prismaErrorResponse } from "@/lib/prisma-errors";
 
 function normalizeEmail(raw: unknown): string | null {
   if (typeof raw !== "string") return null;
@@ -61,7 +62,6 @@ export async function POST(req: Request) {
       bookings: [] as const,
     });
   } catch (e) {
-    console.error(e);
-    return NextResponse.json({ error: "Server error." }, { status: 500 });
+    return prismaErrorResponse(e);
   }
 }

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { prismaErrorResponse } from "@/lib/prisma-errors";
 
 const PACKS: Record<string, number> = {
   starter: 3,
@@ -74,7 +75,6 @@ export async function POST(req: Request) {
       added: delta,
     });
   } catch (e) {
-    console.error(e);
-    return NextResponse.json({ error: "Server error." }, { status: 500 });
+    return prismaErrorResponse(e);
   }
 }

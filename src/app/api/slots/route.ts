@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { prismaErrorResponse } from "@/lib/prisma-errors";
 import { generateCandidateSlots } from "@/lib/slots";
 
 export async function GET() {
@@ -17,7 +18,6 @@ export async function GET() {
 
     return NextResponse.json({ slots });
   } catch (e) {
-    console.error(e);
-    return NextResponse.json({ error: "Server error." }, { status: 500 });
+    return prismaErrorResponse(e);
   }
 }

@@ -14,8 +14,6 @@ function createPrisma() {
   });
 }
 
-export const prisma =
-  globalForPrisma.prisma ??
-  createPrisma();
-
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
+/** Reuse one client per Node worker (dev and production). */
+export const prisma = globalForPrisma.prisma ?? createPrisma();
+globalForPrisma.prisma = prisma;

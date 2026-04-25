@@ -87,6 +87,7 @@ After deploy, open the generated **`.up.railway.app`** URL and test **Book**.
 | `GET` | `/api/slots` | Next available ET business-hour slots (45 min) not yet booked |
 | `POST` | `/api/book` | `{ "email", "startsAt" }` — book if credits ≥ 1 |
 | `POST` | `/api/credits/purchase-dev` | `{ "email", "pack", "secret" }` — add credits (dev / manual) |
+| `GET` | `/api/health` | DB connectivity check (`{ "ok": true }` or JSON error + `code`) |
 
 ## License
 
