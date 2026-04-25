@@ -10,7 +10,7 @@ export function prismaErrorResponse(e: unknown, fallbackStatus = 500) {
       return NextResponse.json(
         {
           error:
-            "Database tables are missing. Run migrations against this database (e.g. ensure `npm run build` runs `prisma migrate deploy` with DATABASE_URL at build time).",
+            "Database tables are missing. Run migrations against this database (Railway uses `npm run start` -> `prisma migrate deploy`).",
           code: e.code,
         },
         { status: 503 },

@@ -1,6 +1,6 @@
 # Clearfield — Modern Work consulting site
 
-Single Next.js app with a **credit ledger** (PostgreSQL + Prisma) and booking UI. Brand: **Clearfield** — Microsoft 365 / Modern Work consulting (advisory + hands-on delivery).
+Single Next.js app with a **credit-ledger SaaS core** (PostgreSQL + Prisma): user accounts, auth sessions, admin mode, email list, credit packs, purchases, and booking UI.
 
 ## Local setup
 
@@ -23,6 +23,39 @@ Open [http://localhost:3000](http://localhost:3000) and use **Book** to:
 1. Enter a work email → a **Client** row is created with **one welcome credit** and a ledger entry.
 2. Pick a slot → a **Booking** row is created and one credit is debited.
 3. When credits hit zero, use the dev purchase API (or wire Stripe later).
+
+## SaaS schema (PostgreSQL)
+
+Core models:
+- `BookingAccount` (maps to `Client` table): customer account + credit balance
+- `User` + `UserSession`: auth credentials and session cookies
+- `CreditPack` + `Purchase`: purchasable consulting-credit packs
+- `CreditLedger`: immutable credit in/out movements
+- `Booking`: scheduled sessions
+- `EmailSubscriber`: email list / waitlist
+
+New migration: `prisma/migrations/20260425152000_saas_core/migration.sql`
+
+## Auth + admin routes
+
+- `POST /api/auth/register` - create account/user + session (welcome credit)
+- `POST /api/auth/login` - sign in
+- `POST /api/auth/logout` - revoke session
+- `GET /api/auth/me` - current user
+- `GET /api/admin/overview` - admin dashboard stats
+- `GET/POST /api/admin/packs` - list/upsert packs (admin)
+- `POST /api/admin/seed` - seed default packs (+ optional admin bootstrap)
+- `POST /api/email/subscribe` - join email list
+- `GET /api/packs` - list active packs
+- `POST /api/purchase` - buy credits (manual MVP)
+
+## Environment variables
+
+- `DATABASE_URL` - Postgres connection string
+- `DEV_PURCHASE_SECRET` - existing dev top-up endpoint secret
+- `ADMIN_SEED_SECRET` - required for `POST /api/admin/seed`
+- `ADMIN_BOOTSTRAP_EMAIL` - optional admin user email created during seed
+- `ADMIN_BOOTSTRAP_PASSWORD` - optional admin user password for seed
 
 ## Consultant credit packs (development)
 
@@ -77,7 +110,7 @@ After deploy, open the generated **`.up.railway.app`** URL and test **Book**.
 
 - **Prisma model:** The table is still named `Client` in Postgres; the Prisma model is **`BookingAccount`** (`@@map("Client")`) to avoid clashing with `PrismaClient` in some bundlers.
 - **Database:** PostgreSQL (Railway plugin or any host). `DATABASE_URL` must match Prisma’s `postgresql://…` format.
-- **Payments:** Replace `/api/credits/purchase-dev` with Stripe Checkout; on `checkout.session.completed`, insert positive `CreditLedger` rows and increment `creditBalance`.
+- **Payments:** Replace manual `/api/purchase` with Stripe Checkout + webhook verification before marking `Purchase.status = PAID`.
 - **Calendar:** This MVP does not send calendar invites automatically—hook Microsoft Graph, Cal.com, or Calendly after checkout if you want native invites.
 
 ## API summary

@@ -7,16 +7,32 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-/// End client or prospect (identified by email for this MVP).
-/// Renamed from "Client" to avoid any runtime confusion with PrismaClient / fetch Client.
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum PurchaseStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+/// End client/prospect account keyed by email.
 model BookingAccount {
   id             String          @id @default(cuid())
   email          String          @unique
+  fullName       String?
+  company        String?
   creditBalance  Int             @default(0)
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
   ledgerEntries  CreditLedger[]
   bookings       Booking[]
+  users          User[]
+  purchases      Purchase[]
+  emailOptIn     Boolean         @default(true)
 
   @@map("Client")
 }
@@ -44,4 +60,80 @@ model Booking {
 
   @@unique([startsAt])
   @@index([clientId])
+}
+
+model User {
+  id               String          @id @default(cuid())
+  bookingAccountId String
+  account          BookingAccount  @relation(fields: [bookingAccountId], references: [id], onDelete: Cascade)
+  email            String          @unique
+  passwordHash     String
+  role             UserRole        @default(USER)
+  isActive         Boolean         @default(true)
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+  sessions         UserSession[]
+  purchases        Purchase[]
+
+  @@index([bookingAccountId])
+}
+
+model UserSession {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash  String   @unique
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  revokedAt  DateTime?
+  ipAddress  String?
+  userAgent  String?
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model CreditPack {
+  id            String      @id @default(cuid())
+  slug          String      @unique
+  title         String
+  credits       Int
+  priceCents    Int
+  isActive      Boolean     @default(true)
+  displayOrder  Int         @default(0)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  purchases     Purchase[]
+}
+
+model Purchase {
+  id               String          @id @default(cuid())
+  bookingAccountId String
+  account          BookingAccount  @relation(fields: [bookingAccountId], references: [id], onDelete: Cascade)
+  userId           String
+  user             User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  creditPackId     String
+  creditPack       CreditPack      @relation(fields: [creditPackId], references: [id])
+  quantity         Int             @default(1)
+  creditsGranted   Int
+  amountCents      Int
+  status           PurchaseStatus  @default(PENDING)
+  provider         String          @default("manual")
+  providerRef      String?
+  notes            String?
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+
+  @@index([bookingAccountId])
+  @@index([userId])
+  @@index([createdAt])
+}
+
+model EmailSubscriber {
+  id             String   @id @default(cuid())
+  email          String   @unique
+  fullName       String?
+  source         String   @default("site")
+  subscribedAt   DateTime @default(now())
+  unsubscribedAt DateTime?
 }

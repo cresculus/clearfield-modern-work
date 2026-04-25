@@ -57,6 +57,12 @@ export default function RootLayout({
               <Link href="/book" className="hover:text-amber-700 dark:hover:text-amber-400">
                 Book
               </Link>
+              <Link href="/account" className="hover:text-amber-700 dark:hover:text-amber-400">
+                Account
+              </Link>
+              <Link href="/admin" className="hover:text-amber-700 dark:hover:text-amber-400">
+                Admin
+              </Link>
             </div>
           </div>
         </footer>

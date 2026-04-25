@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { SERVICES } from "@/lib/services-content";
+import { NewsletterSignup } from "@/components/NewsletterSignup";
 
 export default function Home() {
   return (
@@ -60,15 +61,30 @@ export default function Home() {
         <section className="mt-20 rounded-3xl border border-amber-200/80 bg-gradient-to-br from-amber-50 to-white p-10 dark:border-amber-900/40 dark:from-amber-950/30 dark:to-zinc-900">
           <h2 className="text-2xl font-bold text-zinc-900 dark:text-white">Ready when you are</h2>
           <p className="mt-3 max-w-xl text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">
-            Multi-step booking keeps scope clear: overview → email → time → confirmation. No accounts beyond your
-            work email for this MVP.
+            Multi-step booking keeps scope clear: overview → email → time → confirmation. Full SaaS account mode is
+            now available with login, purchases, and admin tooling.
           </p>
-          <Link
-            href="/book"
-            className="mt-8 inline-flex rounded-full bg-zinc-900 px-6 py-3 text-sm font-semibold text-white hover:bg-zinc-800 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-100"
-          >
-            Open booking
-          </Link>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link
+              href="/book"
+              className="inline-flex rounded-full bg-zinc-900 px-6 py-3 text-sm font-semibold text-white hover:bg-zinc-800 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-100"
+            >
+              Open booking
+            </Link>
+            <Link
+              href="/account"
+              className="inline-flex rounded-full border border-zinc-300 bg-white px-6 py-3 text-sm font-semibold text-zinc-900 hover:bg-zinc-50 dark:border-zinc-600 dark:bg-zinc-900 dark:text-zinc-100"
+            >
+              Account & credits
+            </Link>
+          </div>
+          <div className="mt-8 rounded-2xl border border-zinc-200/80 bg-white/80 p-5 dark:border-zinc-700 dark:bg-zinc-900/60">
+            <h3 className="font-semibold text-zinc-900 dark:text-white">Join the email list</h3>
+            <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-300">
+              Product updates, pack releases, and consulting availability.
+            </p>
+            <NewsletterSignup />
+          </div>
         </section>
       </div>
     </div>
