@@ -1,36 +1,66 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Clearfield — Modern Work consulting site
 
-## Getting Started
+Single Next.js app with a **credit ledger** (SQLite + Prisma) and booking UI. Brand: **Clearfield** — Microsoft 365 / Modern Work consulting (advisory + hands-on delivery).
 
-First, run the development server:
+## Local setup
 
 ```bash
+cp .env.example .env
+npm install
+npx prisma migrate dev
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) and use **Book** to:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Enter a work email → a **Client** row is created with **one welcome credit** and a ledger entry.
+2. Pick a slot → a **Booking** row is created and one credit is debited.
+3. When credits hit zero, use the dev purchase API (or wire Stripe later).
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Consultant credit packs (development)
 
-## Learn More
+Set `DEV_PURCHASE_SECRET` in `.env`. Then:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+curl -X POST http://localhost:3000/api/credits/purchase-dev ^
+  -H "Content-Type: application/json" ^
+  -d "{\"email\":\"you@company.com\",\"pack\":\"bench\",\"secret\":\"YOUR_DEV_PURCHASE_SECRET\"}"
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Packs: `starter` (3), `bench` (8), `field` (20) credits. Replace with Stripe Checkout + webhooks for production.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Push to GitHub
 
-## Deploy on Vercel
+```bash
+cd clearfield-modern-work
+git add -A
+git commit -m "Initial Clearfield consulting site with credits and booking"
+gh repo create clearfield-modern-work --public --source=. --remote=origin --push
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Or create an empty repo in the GitHub UI, then:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+git remote add origin https://github.com/YOUR_USER/clearfield-modern-work.git
+git branch -M main
+git push -u origin main
+```
+
+## Production notes
+
+- **Database:** SQLite is fine for demos; use **Postgres** (Neon, Supabase, Railway, etc.) for real traffic. Set `DATABASE_URL` to the hosted URL and run `npx prisma migrate deploy` in CI or the host’s build step.
+- **Payments:** Replace `/api/credits/purchase-dev` with Stripe Checkout; on `checkout.session.completed`, insert positive `CreditLedger` rows and increment `creditBalance`.
+- **Calendar:** This MVP does not send calendar invites automatically—hook Microsoft Graph, Cal.com, or Calendly after checkout if you want native invites.
+
+## API summary
+
+| Method | Path | Purpose |
+|--------|------|---------|
+| `POST` | `/api/client` | `{ "email" }` — create client + welcome credit, or return balance + bookings |
+| `GET` | `/api/slots` | Next available ET business-hour slots (45 min) not yet booked |
+| `POST` | `/api/book` | `{ "email", "startsAt" }` — book if credits ≥ 1 |
+| `POST` | `/api/credits/purchase-dev` | `{ "email", "pack", "secret" }` — add credits (dev / manual) |
+
+## License
+
+Private project — you own the code.
