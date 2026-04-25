@@ -38,12 +38,11 @@ git commit -m "Initial Clearfield consulting site with credits and booking"
 gh repo create clearfield-modern-work --public --source=. --remote=origin --push
 ```
 
-Or create an empty repo in the GitHub UI, then:
+This workspace was pushed to: `https://github.com/cresculus/clearfield-modern-work` (the GitHub CLI account on this machine). To use your own account instead, create an empty repo in the GitHub UI, then:
 
 ```bash
-git remote add origin https://github.com/YOUR_USER/clearfield-modern-work.git
-git branch -M main
-git push -u origin main
+git remote set-url origin https://github.com/YOUR_USER/clearfield-modern-work.git
+git push -u origin master
 ```
 
 ## Production notes
