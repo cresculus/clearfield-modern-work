@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getCurrentUser } from "@/lib/auth";
+import { getCurrentUser, isOwnerEmail } from "@/lib/auth";
 
 const links = [
   { href: "/services", label: "Services" },
@@ -10,7 +10,7 @@ const links = [
 
 export async function SiteNav() {
   const user = await getCurrentUser();
-  const showAdmin = user?.email.toLowerCase() === "brandon.sardelli@gmail.com";
+  const showAdmin = user?.email && isOwnerEmail(user.email);
 
   return (
     <header className="sticky top-0 z-40 border-b border-white/10 bg-zinc-950/70 backdrop-blur-xl">

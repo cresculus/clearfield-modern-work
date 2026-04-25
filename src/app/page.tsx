@@ -2,111 +2,159 @@ import Link from "next/link";
 import { SERVICES } from "@/lib/services-content";
 import { NewsletterSignup } from "@/components/NewsletterSignup";
 
+function HeroJourney() {
+  return (
+    <div className="landing-journey" aria-hidden="true">
+      <svg className="landing-journey-svg" viewBox="0 0 400 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path
+          className="landing-journey-track"
+          d="M 0 16 Q 100 4, 200 16 T 400 16"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          pathLength="1"
+        />
+        <path
+          className="landing-journey-draw"
+          d="M 0 16 Q 100 4, 200 16 T 400 16"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          pathLength="1"
+        />
+      </svg>
+      <div className="landing-journey-labels">
+        <span>Account</span>
+        <span>Credits</span>
+        <span>Book</span>
+        <span>Ship</span>
+      </div>
+    </div>
+  );
+}
+
 export default function Home() {
   return (
-    <div className="hero-grid">
-      <section className="border-b border-white/10">
-        <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-24">
-          <p className="fade-up text-sm font-semibold uppercase tracking-widest text-fuchsia-300">Clearfield IT</p>
-          <h1 className="fade-up-delay mt-4 max-w-3xl text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
-            Microsoft 365 consulting
-            <br />
-            <span className="bg-gradient-to-r from-fuchsia-400 to-indigo-300 bg-clip-text text-transparent">
-              with hands-on execution.
-            </span>
-          </h1>
-          <p className="mt-6 max-w-xl text-base leading-relaxed text-zinc-300">
-            Intune, Entra ID, Defender, AVD. Buy credits. Book sessions. Ship improvements quickly.
-          </p>
-          <div className="mt-10 flex flex-wrap gap-4">
-            <Link
-              href="/book"
-              className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-fuchsia-500 to-indigo-500 px-8 py-3.5 text-sm font-semibold text-white shadow-lg shadow-fuchsia-500/30 transition hover:scale-[1.02]"
-            >
-              Book now
-            </Link>
-            <Link
-              href="/account"
-              className="inline-flex items-center justify-center rounded-full border border-white/20 bg-white/5 px-8 py-3.5 text-sm font-semibold text-zinc-100 backdrop-blur hover:bg-white/10"
-            >
-              Login / Register
-            </Link>
+    <div className="landing-page">
+      <section className="landing-hero">
+        <div className="landing-hero-glow" aria-hidden="true" />
+        <div className="landing-hero-orbs" aria-hidden="true">
+          <div
+            className="landing-orb h-48 w-48 bg-violet-600/40"
+            style={{ top: "8%", left: "5%" }}
+          />
+          <div
+            className="landing-orb h-56 w-56 bg-teal-500/30"
+            style={{ bottom: "12%", right: "8%" }}
+          />
+        </div>
+
+        <div className="landing-container">
+          <div className="landing-hero-inner landing-stagger">
+            <p className="landing-banner">Clearfield · Modern Work</p>
+            <h1 className="landing-title landing-gradient-text">
+              Microsoft 365 consulting that ships.
+            </h1>
+            <p className="landing-tagline">Hands-on, not slide-only.</p>
+            <p className="landing-subtitle">
+              Entra ID, Intune, Defender, AVD. Sign in, use credits, book time, and walk away with next steps you can execute.
+            </p>
+
+            <div className="landing-pills">
+              <span className="landing-pill landing-pill--cyan">Identity &amp; CA</span>
+              <span className="landing-pill landing-pill--violet">Endpoint baselines</span>
+              <span className="landing-pill landing-pill--emerald">Secure Score motion</span>
+            </div>
+
+            <HeroJourney />
+
+            <div className="landing-actions">
+              <Link href="/book" className="landing-btn landing-btn-primary">
+                Book a session
+              </Link>
+              <Link href="/account" className="landing-btn landing-btn-secondary">
+                Login / Register
+              </Link>
+            </div>
           </div>
         </div>
       </section>
 
-      <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-        <section className="glass rounded-3xl p-8">
-          <p className="text-xs uppercase tracking-widest text-zinc-400">About</p>
-          <h2 className="mt-2 text-2xl font-semibold text-white">Brandon Sardelli</h2>
-          <p className="mt-2 max-w-3xl text-sm leading-relaxed text-zinc-300">
-            Modern Work and endpoint consultant focused on practical M365 outcomes for MSPs and enterprise teams.
+      <div className="landing-container">
+        <section className="landing-section border-t border-white/5">
+          <p className="landing-section-title">Who you work with</p>
+          <h2 className="landing-section-heading">Brandon Sardelli</h2>
+          <p className="landing-lead">
+            Same patterns as enterprise go-lives—scoped for your tenant, your MSP, or your internal IT team. Credits keep scheduling predictable.
           </p>
         </section>
 
-        <section id="services" className="scroll-mt-24">
-          <h2 className="text-sm font-bold uppercase tracking-widest text-zinc-400">What I handle</h2>
-          <ul className="mt-8 grid gap-5 md:grid-cols-3">
+        <section id="services" className="landing-section scroll-mt-24 border-t border-white/5">
+          <p className="landing-section-title">Capabilities</p>
+          <h2 className="landing-section-heading">What I take end-to-end</h2>
+          <p className="landing-lead">Deep Microsoft stack coverage. Pick what is blocking you first.</p>
+          <ul className="landing-card-grid landing-card-grid--services list-none p-0">
             {SERVICES.map((s) => (
-              <li
-                key={s.title}
-                className="glass float rounded-2xl p-5"
-              >
-                <h3 className="font-semibold text-white">{s.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-zinc-300">{s.body}</p>
+              <li key={s.title} className="landing-card float">
+                <h3>{s.title}</h3>
+                <p>{s.body}</p>
               </li>
             ))}
           </ul>
         </section>
 
-        <section className="mt-20 grid gap-5 md:grid-cols-3">
-          {[
-            { title: "Buy credits", body: "Starter, bench, or field packs." },
-            { title: "Book a slot", body: "Pick an open ET time in minutes." },
-            { title: "Get outcomes", body: "Session + concise action summary." },
-          ].map((step, i) => (
-            <div key={step.title} className="glass rounded-2xl p-6">
-              <p className="text-xs font-semibold uppercase tracking-wide text-fuchsia-300">Step {i + 1}</p>
-              <h3 className="mt-2 text-lg font-semibold text-white">{step.title}</h3>
-              <p className="mt-1 text-sm text-zinc-300">{step.body}</p>
-            </div>
-          ))}
+        <section className="landing-section border-t border-white/5">
+          <p className="landing-section-title">How it works</p>
+          <h2 className="landing-section-heading">Credits, calendar, outcomes</h2>
+          <div className="landing-steps">
+            {[
+              { k: "01", title: "Create account", body: "Email + password. Your org is stored for credits and bookings." },
+              { k: "02", title: "Buy credits", body: "Starter packs for follow-on work after your intro credit." },
+              { k: "03", title: "Book & execute", body: "1 credit = 45 minutes. Session notes point to concrete changes." },
+            ].map((step) => (
+              <div key={step.k} className="landing-step">
+                <p className="landing-step-kicker">{step.k}</p>
+                <h3 className="mt-2 text-lg font-semibold text-white">{step.title}</h3>
+                <p className="mt-1 text-sm leading-relaxed text-zinc-400">{step.body}</p>
+              </div>
+            ))}
+          </div>
         </section>
 
-        <section className="mt-20 glass rounded-3xl p-8 sm:p-10">
-          <h2 className="text-2xl font-bold text-white">Client feedback</h2>
-          <div className="mt-4 grid gap-4 md:grid-cols-2">
-            <blockquote className="rounded-2xl border border-white/10 bg-white/5 p-5 text-sm text-zinc-300">
+        <section className="landing-section border-t border-white/5">
+          <p className="landing-section-title">Proof</p>
+          <h2 className="landing-section-heading">What clients say</h2>
+          <div className="landing-quote-grid">
+            <blockquote className="landing-quote">
               &ldquo;Fast, clear, and technical. We shipped policy changes in the same week.&rdquo;
             </blockquote>
-            <blockquote className="rounded-2xl border border-white/10 bg-white/5 p-5 text-sm text-zinc-300">
-              &ldquo;Exactly what our team needed: practical guidance, not generic consulting.&rdquo;
+            <blockquote className="landing-quote">
+              &ldquo;Practical guidance—not generic consulting decks we would never implement.&rdquo;
             </blockquote>
           </div>
         </section>
 
-        <section className="mt-10 glass rounded-3xl p-8 sm:p-10">
-          <h2 className="text-2xl font-bold text-white">Simple model</h2>
-          <p className="mt-3 max-w-xl text-sm leading-relaxed text-zinc-300">
-            1 credit = 45 minutes. Buy credits, book time, move forward.
-          </p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Link
-              href="/book"
-              className="inline-flex rounded-full bg-gradient-to-r from-fuchsia-500 to-indigo-500 px-6 py-3 text-sm font-semibold text-white hover:opacity-90"
-            >
-              Start booking
-            </Link>
-            <Link
-              href="/account"
-              className="inline-flex rounded-full border border-white/20 bg-white/5 px-6 py-3 text-sm font-semibold text-zinc-100 hover:bg-white/10"
-            >
-              Buy credits
-            </Link>
-          </div>
-          <div className="mt-8 rounded-2xl border border-white/10 bg-white/5 p-5">
-            <h3 className="font-semibold text-white">Join the list</h3>
-            <NewsletterSignup />
+        <section className="landing-section border-t border-white/5 pb-24">
+          <div className="landing-cta-panel">
+            <h2 className="text-xl font-bold text-white sm:text-2xl">Ready when you are</h2>
+            <p className="mt-2 max-w-lg text-sm leading-relaxed text-zinc-300">
+              Use your intro credit or buy a pack, then grab a slot in Eastern Time.
+            </p>
+            <div className="landing-actions !mt-6 !justify-start">
+              <Link href="/book" className="landing-btn landing-btn-primary">
+                Start booking
+              </Link>
+              <Link href="/account" className="landing-btn landing-btn-secondary">
+                Buy credits
+              </Link>
+            </div>
+            <div className="mt-8 rounded-2xl border border-white/10 bg-black/20 p-5">
+              <h3 className="text-sm font-semibold text-white">Updates</h3>
+              <p className="mt-1 text-xs text-zinc-400">Low-volume list: M365 notes and availability.</p>
+              <div className="mt-4">
+                <NewsletterSignup />
+              </div>
+            </div>
           </div>
         </section>
       </div>

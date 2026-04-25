@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Link from "next/link";
 import { SiteNav } from "@/components/SiteNav";
-import { getCurrentUser } from "@/lib/auth";
+import { getCurrentUser, isOwnerEmail } from "@/lib/auth";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -30,7 +30,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const user = await getCurrentUser();
-  const showAdmin = user?.email.toLowerCase() === "brandon.sardelli@gmail.com";
+  const showAdmin = user?.email && isOwnerEmail(user.email);
 
   return (
     <html
