@@ -9,21 +9,19 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   return (
     <div className="mx-auto max-w-2xl px-4 py-14 sm:px-6">
-      <h1 className="text-4xl font-bold tracking-tight text-zinc-900 dark:text-white">Contact</h1>
-      <p className="mt-4 text-lg leading-relaxed text-zinc-600 dark:text-zinc-300">
-        Prefer to talk before booking? Use the session scheduler—intro calls use your welcome credit—or reach out via
-        the channels you publish for your practice (LinkedIn, work email, etc.).
+      <h1 className="text-4xl font-bold tracking-tight text-white">Contact</h1>
+      <p className="mt-4 text-base leading-relaxed text-zinc-300">
+        Fastest path: buy credits and book directly.
       </p>
-      <div className="mt-10 rounded-2xl border border-zinc-200 bg-white p-8 dark:border-zinc-800 dark:bg-zinc-900/50">
-        <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">Next step</p>
-        <p className="mt-2 text-zinc-800 dark:text-zinc-100">
-          Add your preferred contact details here in the codebase (this page is a professional placeholder).
-        </p>
+      <div className="glass mt-10 rounded-2xl p-8">
+        <p className="text-sm font-medium text-zinc-400">Direct</p>
+        <p className="mt-2 text-zinc-100">Email: brandon.sardelli@gmail.com</p>
+        <p className="mt-1 text-zinc-100">LinkedIn: linkedin.com/in/brandonsardelli</p>
         <Link
           href="/book"
-          className="mt-6 inline-flex rounded-full bg-zinc-900 px-5 py-2.5 text-sm font-semibold text-white hover:bg-zinc-800 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-100"
+          className="mt-6 inline-flex rounded-full bg-gradient-to-r from-fuchsia-500 to-indigo-500 px-5 py-2.5 text-sm font-semibold text-white hover:opacity-90"
         >
-          Book a session
+          Book now
         </Link>
       </div>
     </div>
