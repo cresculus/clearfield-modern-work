@@ -21,9 +21,8 @@ export default function BookLayout({ children }: { children: React.ReactNode }) 
           Book a session
         </h1>
         <p className="mt-2 max-w-2xl text-base leading-relaxed text-zinc-600 dark:text-zinc-300">
-          Four quick steps: overview, your work email, choose a time (US Eastern business hours), then confirmation.
-          New visitors receive <strong className="text-zinc-900 dark:text-white">one complimentary credit</strong> for an
-          intro session.
+          Four quick steps: overview, account check, choose a time (US Eastern business hours), then confirmation.
+          Credits are tied to your signed-in account.
         </p>
         <div className="mt-6">
           <ExtensionTip />

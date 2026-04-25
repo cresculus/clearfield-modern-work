@@ -1,23 +1,17 @@
 import { Prisma } from "@prisma/client";
 import { NextResponse } from "next/server";
+import { requireUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { prismaErrorResponse } from "@/lib/prisma-errors";
 import { addSessionMinutes, generateCandidateSlots } from "@/lib/slots";
 
-function normalizeEmail(raw: unknown): string | null {
-  if (typeof raw !== "string") return null;
-  const email = raw.trim().toLowerCase();
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return null;
-  return email;
-}
-
 export async function POST(req: Request) {
   try {
-    const body = (await req.json()) as { email?: string; startsAt?: string };
-    const email = normalizeEmail(body.email);
+    const user = await requireUser();
+    const body = (await req.json()) as { startsAt?: string };
     const startsAtRaw = body.startsAt;
-    if (!email || typeof startsAtRaw !== "string") {
-      return NextResponse.json({ error: "Email and startsAt required." }, { status: 400 });
+    if (typeof startsAtRaw !== "string") {
+      return NextResponse.json({ error: "startsAt required." }, { status: 400 });
     }
 
     const startsAt = new Date(startsAtRaw);
@@ -32,9 +26,9 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "That slot is not offered." }, { status: 400 });
     }
 
-    const account = await prisma.bookingAccount.findUnique({ where: { email } });
+    const account = await prisma.bookingAccount.findUnique({ where: { id: user.bookingAccountId } });
     if (!account) {
-      return NextResponse.json({ error: "Unknown email — start on the book page." }, { status: 400 });
+      return NextResponse.json({ error: "Account not found. Please sign in again." }, { status: 400 });
     }
     if (account.creditBalance < 1) {
       return NextResponse.json(
@@ -107,6 +101,9 @@ export async function POST(req: Request) {
       throw e;
     }
   } catch (e) {
+    if (e instanceof Error && e.message === "UNAUTHORIZED") {
+      return NextResponse.json({ error: "Sign in required." }, { status: 401 });
+    }
     return prismaErrorResponse(e);
   }
 }

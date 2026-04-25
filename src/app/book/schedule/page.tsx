@@ -4,9 +4,6 @@ import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
-  readBookingBalance,
-  readBookingEmail,
-  readBookingIsNew,
   saveLastBooking,
   updateBalance,
 } from "@/lib/booking-storage";
@@ -40,20 +37,24 @@ export default function BookSchedulePage() {
   }, []);
 
   useEffect(() => {
-    const em = readBookingEmail();
-    // Client-only: hydrate wizard state from sessionStorage after mount (no SSR access).
-    queueMicrotask(() => {
-      setEmail(em);
-      setBalance(readBookingBalance());
-      setIsNew(readBookingIsNew());
-    });
-    if (!em) {
-      router.replace("/book/email");
-      return;
-    }
     let cancelled = false;
     (async () => {
       try {
+        const meRes = await fetch("/api/auth/me", { cache: "no-store" });
+        const me = (await meRes.json()) as {
+          authenticated?: boolean;
+          user?: { account?: { email: string; creditBalance: number } };
+        };
+        if (!me.authenticated || !me.user?.account) {
+          router.replace("/account?returnTo=/book/schedule");
+          return;
+        }
+        if (!cancelled) {
+          setEmail(me.user.account.email);
+          setBalance(me.user.account.creditBalance);
+          setIsNew(me.user.account.creditBalance === 1);
+          updateBalance(me.user.account.creditBalance);
+        }
         await loadSlots();
       } catch (e) {
         if (!cancelled) setError(e instanceof Error ? e.message : "Could not load times.");
@@ -74,7 +75,7 @@ export default function BookSchedulePage() {
       const res = await fetch("/api/book", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, startsAt }),
+        body: JSON.stringify({ startsAt }),
       });
       const data = (await res.json()) as {
         booking?: { id: string; startsAt: string; kind: string };
@@ -83,6 +84,10 @@ export default function BookSchedulePage() {
         code?: string;
       };
       if (!res.ok) {
+        if (res.status === 401) {
+          router.push("/account?returnTo=/book/schedule");
+          return;
+        }
         const msg =
           typeof data.error === "string"
             ? data.code
@@ -143,8 +148,14 @@ export default function BookSchedulePage() {
         <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-950 dark:border-amber-900/50 dark:bg-amber-950/30 dark:text-amber-50">
           <p className="font-medium">You need more credits</p>
           <p className="mt-2 text-amber-900/90 dark:text-amber-100/90">
-            Add a pack using the purchase API, or contact Clearfield to invoice a block of hours.
+            Buy a credit pack from your account page, then come back here to book.
           </p>
+          <Link
+            href="/account"
+            className="mt-3 inline-flex rounded-full bg-amber-500 px-4 py-2 text-xs font-semibold text-zinc-950"
+          >
+            Go to account
+          </Link>
         </div>
       )}
 
@@ -167,10 +178,10 @@ export default function BookSchedulePage() {
       )}
 
       <Link
-        href="/book/email"
+        href="/account"
         className="inline-block text-sm font-medium text-zinc-500 underline hover:text-zinc-800 dark:hover:text-zinc-200"
       >
-        Use a different email
+        Switch account
       </Link>
     </div>
   );

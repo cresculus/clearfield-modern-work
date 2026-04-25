@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { formatSlotEt } from "@/lib/slots";
-import { readLastBooking, readBookingEmail } from "@/lib/booking-storage";
+import { readLastBooking } from "@/lib/booking-storage";
 import type { LastBooking } from "@/lib/booking-storage";
 
 export default function BookConfirmationPage() {
@@ -13,11 +13,6 @@ export default function BookConfirmationPage() {
 
   useEffect(() => {
     const b = readLastBooking();
-    const email = readBookingEmail();
-    if (!email) {
-      router.replace("/book/email");
-      return;
-    }
     if (!b) {
       router.replace("/book/schedule");
       return;

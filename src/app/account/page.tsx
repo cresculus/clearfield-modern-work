@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 type Me = {
   authenticated: boolean;
@@ -15,6 +16,9 @@ type Me = {
 type Pack = { id: string; slug: string; title: string; credits: number; priceCents: number };
 
 export default function AccountPage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const returnTo = searchParams.get("returnTo");
   const [me, setMe] = useState<Me>({ authenticated: false });
   const [packs, setPacks] = useState<Pack[]>([]);
   const [email, setEmail] = useState("");
@@ -58,6 +62,7 @@ export default function AccountPage() {
       if (!res.ok) throw new Error(data.error ?? "Registration failed.");
       await loadMe();
       setMessage("Account created and signed in.");
+      if (returnTo) router.push(returnTo);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Registration failed.");
     } finally {
@@ -79,6 +84,7 @@ export default function AccountPage() {
       if (!res.ok) throw new Error(data.error ?? "Login failed.");
       await loadMe();
       setMessage("Signed in.");
+      if (returnTo) router.push(returnTo);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Login failed.");
     } finally {
