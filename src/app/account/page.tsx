@@ -157,6 +157,11 @@ export default function AccountPage() {
           <section className="rounded-2xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900/50">
             <h2 className="font-semibold">Purchase credits</h2>
             <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-300">MVP mode uses manual purchase API; replace with Stripe checkout next.</p>
+            <div className="mt-3 rounded-lg border border-zinc-200 bg-zinc-50 p-3 text-xs leading-relaxed text-zinc-700 dark:border-zinc-700 dark:bg-zinc-900/60 dark:text-zinc-300">
+              <p><strong>1 credit includes:</strong> one 45-minute consulting session.</p>
+              <p className="mt-1"><strong>Delivery:</strong> concise action summary after each session.</p>
+              <p className="mt-1"><strong>Not included:</strong> managed services/on-call support unless separately agreed.</p>
+            </div>
             <ul className="mt-4 grid gap-3 sm:grid-cols-2">
               {packs.map((p) => (
                 <li key={p.id} className="rounded-xl border border-zinc-200 p-4 dark:border-zinc-700">

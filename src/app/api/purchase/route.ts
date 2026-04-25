@@ -9,6 +9,19 @@ import { requireUser } from "@/lib/auth";
  */
 export async function POST(req: Request) {
   try {
+    const manualPurchasesEnabled =
+      process.env.NODE_ENV !== "production" ||
+      process.env.ENABLE_MANUAL_PURCHASES === "true";
+    if (!manualPurchasesEnabled) {
+      return NextResponse.json(
+        {
+          error:
+            "Manual purchases are disabled in production. Enable Stripe checkout or set ENABLE_MANUAL_PURCHASES=true.",
+        },
+        { status: 503 },
+      );
+    }
+
     const user = await requireUser();
     const body = (await req.json()) as { packId?: string; quantity?: number };
     const packId = typeof body.packId === "string" ? body.packId : "";

@@ -51,6 +51,11 @@ export default function HowItWorksPage() {
           After your welcome credit, you add credits (today via a secured dev API; production typically uses Stripe).
           One credit equals one scheduled block.
         </p>
+        <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-zinc-600 dark:text-zinc-300">
+          <li>1 credit = 45-minute session + brief written next-steps summary.</li>
+          <li>Best-effort response target for booked sessions: within one business day.</li>
+          <li>Managed/on-call operations are out-of-scope unless explicitly contracted.</li>
+        </ul>
       </section>
 
       <Link

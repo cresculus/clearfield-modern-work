@@ -53,6 +53,7 @@ New migration: `prisma/migrations/20260425152000_saas_core/migration.sql`
 
 - `DATABASE_URL` - Postgres connection string
 - `DEV_PURCHASE_SECRET` - existing dev top-up endpoint secret
+- `ENABLE_MANUAL_PURCHASES` - set `"true"` to allow `/api/purchase` in production (default recommended `"false"` until Stripe is wired)
 - `ADMIN_SEED_SECRET` - required for `POST /api/admin/seed`
 - `ADMIN_BOOTSTRAP_EMAIL` - optional admin user email created during seed
 - `ADMIN_BOOTSTRAP_PASSWORD` - optional admin user password for seed
