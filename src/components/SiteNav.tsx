@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { NavSignOutButton } from "@/components/NavSignOutButton";
 import { getCurrentUser, isOwnerEmail } from "@/lib/auth";
 
 const links = [
@@ -47,6 +48,7 @@ export async function SiteNav() {
               Dashboard
             </Link>
           )}
+          {user && <NavSignOutButton />}
           <Link
             href="/book"
             className="cta-gradient ml-1 rounded-full px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-pink-500/30 transition hover:scale-[1.02]"

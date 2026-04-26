@@ -11,39 +11,37 @@ type Overview = {
   purchases: number;
 };
 
-type Pack = {
+type AdminUser = {
   id: string;
-  slug: string;
-  title: string;
-  credits: number;
-  priceCents: number;
-  displayOrder: number;
+  email: string;
+  role: "USER" | "ADMIN";
+  createdAt: string;
   isActive: boolean;
 };
 
 export default function AdminPage() {
   const [overview, setOverview] = useState<Overview | null>(null);
-  const [packs, setPacks] = useState<Pack[]>([]);
+  const [users, setUsers] = useState<AdminUser[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [form, setForm] = useState({ slug: "", title: "", credits: "5", priceCents: "75000", displayOrder: "10" });
-  const [savingRates, setSavingRates] = useState(false);
+  const [adminEmail, setAdminEmail] = useState("");
+  const [savingAdmin, setSavingAdmin] = useState(false);
 
   async function load() {
     setError(null);
-    const [o, p] = await Promise.all([
+    const [o, u] = await Promise.all([
       fetch("/api/admin/overview", { cache: "no-store" }),
-      fetch("/api/admin/packs", { cache: "no-store" }),
+      fetch("/api/admin/users", { cache: "no-store" }),
     ]);
     if (!o.ok) {
       const e = (await o.json()) as { error?: string };
       throw new Error(e.error ?? "Admin overview failed.");
     }
-    if (!p.ok) {
-      const e = (await p.json()) as { error?: string };
-      throw new Error(e.error ?? "Admin packs failed.");
+    if (!u.ok) {
+      const e = (await u.json()) as { error?: string };
+      throw new Error(e.error ?? "Admin users failed.");
     }
     setOverview(await o.json());
-    setPacks((await p.json()).packs as Pack[]);
+    setUsers((await u.json()).users as AdminUser[]);
   }
 
   useEffect(() => {
@@ -52,41 +50,24 @@ export default function AdminPage() {
     });
   }, []);
 
-  async function savePack() {
-    setError(null);
-    const res = await fetch("/api/admin/packs", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        slug: form.slug,
-        title: form.title,
-        credits: Number(form.credits),
-        priceCents: Number(form.priceCents),
-        displayOrder: Number(form.displayOrder),
-      }),
-    });
-    if (!res.ok) {
-      const e = (await res.json()) as { error?: string };
-      setError(e.error ?? "Save failed.");
-      return;
-    }
-    await load();
-  }
-
-  async function applyMarketRates() {
-    setSavingRates(true);
+  async function setRole(email: string, role: "USER" | "ADMIN") {
+    setSavingAdmin(true);
     setError(null);
     try {
-      const res = await fetch("/api/admin/packs/market-rates", { method: "POST" });
+      const res = await fetch("/api/admin/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, role }),
+      });
       if (!res.ok) {
         const e = (await res.json()) as { error?: string };
-        throw new Error(e.error ?? "Failed applying market rates.");
+        throw new Error(e.error ?? "Failed updating user role.");
       }
       await load();
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Failed applying market rates.");
+      setError(e instanceof Error ? e.message : "Failed updating user role.");
     } finally {
-      setSavingRates(false);
+      setSavingAdmin(false);
     }
   }
 
@@ -108,30 +89,39 @@ export default function AdminPage() {
       )}
 
       <section className="glass mt-8 rounded-2xl p-6">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <h2 className="font-semibold text-white">Credit packs</h2>
+        <h2 className="font-semibold text-white">Admin access management</h2>
+        <p className="mt-2 text-sm text-zinc-300">
+          Admin Center visibility remains owner-only in the navbar. Use this section to grant or remove admin role permissions for users.
+        </p>
+        <div className="mt-4 flex flex-wrap gap-2">
+          <input
+            className="rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-white placeholder:text-zinc-400"
+            placeholder="user email"
+            value={adminEmail}
+            onChange={(e) => setAdminEmail(e.target.value)}
+          />
           <button
-            onClick={() => void applyMarketRates()}
-            disabled={savingRates}
-            className="rounded-full bg-gradient-to-r from-pink-500 via-violet-500 to-cyan-500 px-4 py-2 text-xs font-semibold text-white disabled:opacity-60"
+            disabled={savingAdmin || !adminEmail.trim()}
+            onClick={() => void setRole(adminEmail, "ADMIN")}
+            className="rounded-full bg-gradient-to-r from-pink-500 via-violet-500 to-cyan-500 px-4 py-2 text-sm font-semibold text-white disabled:opacity-60"
           >
-            {savingRates ? "Applying..." : "Apply market-rate pricing"}
+            Make admin
+          </button>
+          <button
+            disabled={savingAdmin || !adminEmail.trim()}
+            onClick={() => void setRole(adminEmail, "USER")}
+            className="rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-white disabled:opacity-60"
+          >
+            Remove admin
           </button>
         </div>
         <ul className="mt-4 space-y-2">
-          {packs.map((p) => (
-            <li key={p.id} className="rounded-lg border border-white/10 px-3 py-2 text-sm text-zinc-200">
-              {p.title} ({p.slug}) - {p.credits} credits - ${(p.priceCents / 100).toFixed(2)}
+          {users.map((u) => (
+            <li key={u.id} className="rounded-lg border border-white/10 px-3 py-2 text-sm text-zinc-200">
+              <span className="font-medium text-white">{u.email}</span> - {u.role} {u.isActive ? "" : "(inactive)"}
             </li>
           ))}
         </ul>
-        <div className="mt-5 grid gap-2 sm:grid-cols-5">
-          <input className="rounded-lg border border-white/15 bg-white/5 px-2 py-1.5 text-white placeholder:text-zinc-400" placeholder="slug" value={form.slug} onChange={(e) => setForm({ ...form, slug: e.target.value })} />
-          <input className="rounded-lg border border-white/15 bg-white/5 px-2 py-1.5 text-white placeholder:text-zinc-400" placeholder="title" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} />
-          <input className="rounded-lg border border-white/15 bg-white/5 px-2 py-1.5 text-white placeholder:text-zinc-400" placeholder="credits" value={form.credits} onChange={(e) => setForm({ ...form, credits: e.target.value })} />
-          <input className="rounded-lg border border-white/15 bg-white/5 px-2 py-1.5 text-white placeholder:text-zinc-400" placeholder="priceCents" value={form.priceCents} onChange={(e) => setForm({ ...form, priceCents: e.target.value })} />
-          <button onClick={() => void savePack()} className="rounded-full bg-gradient-to-r from-fuchsia-500 to-indigo-500 px-4 py-2 text-sm font-semibold text-white">Save</button>
-        </div>
       </section>
 
       <section className="glass mt-8 rounded-2xl p-6">
