@@ -139,6 +139,32 @@ input:disabled,
   cursor: not-allowed;
 }
 
+/* Keep every button solid-color across the app. */
+button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"] {
+  background-color: var(--accent-b);
+  background-image: none !important;
+  border: 1px solid transparent;
+  color: #ffffff;
+}
+
+button:hover,
+input[type="button"]:hover,
+input[type="submit"]:hover,
+input[type="reset"]:hover {
+  filter: brightness(1.05);
+}
+
+button:disabled,
+input[type="button"]:disabled,
+input[type="submit"]:disabled,
+input[type="reset"]:disabled {
+  filter: none;
+  opacity: 0.6;
+}
+
 .hero-grid {
   background-image:
     radial-gradient(circle at 18% 18%, var(--hero-g1), transparent 42%),
