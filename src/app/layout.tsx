@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Link from "next/link";
 import { SiteNav } from "@/components/SiteNav";
+import { PaletteTester } from "@/components/PaletteTester";
 import { getCurrentUser, isOwnerEmail } from "@/lib/auth";
 import "./globals.css";
 
@@ -37,10 +38,10 @@ export default async function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full scroll-smooth antialiased`}
     >
-      <body className="flex min-h-full flex-col bg-[#1b1240] text-zinc-100">
+      <body className="flex min-h-full flex-col text-zinc-100">
         <SiteNav />
         <main className="flex-1">{children}</main>
-        <footer className="border-t border-white/25 bg-gradient-to-r from-pink-500/20 via-violet-500/20 to-cyan-500/20 py-10 backdrop-blur-xl">
+        <footer className="site-footer py-10 backdrop-blur-xl">
           <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-6 px-4 text-center sm:flex-row sm:px-6 sm:text-left">
             <div>
               <p className="text-sm font-semibold text-white">Clearfield IT</p>
@@ -49,25 +50,26 @@ export default async function RootLayout({
               </p>
             </div>
             <div className="flex flex-wrap items-center justify-center gap-4 text-xs font-medium text-zinc-100">
-              <Link href="/#services" className="hover:text-pink-100">
+              <Link href="/#services" className="site-footer-link">
                 Services
               </Link>
-              <Link href="/#flow" className="hover:text-pink-100">
+              <Link href="/#flow" className="site-footer-link">
                 Flow
               </Link>
-              <Link href="/#contact" className="hover:text-pink-100">
+              <Link href="/#contact" className="site-footer-link">
                 Contact
               </Link>
-              <Link href="/dashboard" className="hover:text-pink-100">
+              <Link href="/dashboard" className="site-footer-link">
                 Dashboard
               </Link>
-              <Link href="/account" className="hover:text-pink-100">
+              <Link href="/account" className="site-footer-link">
                 Account
               </Link>
-              {showAdmin && <Link href="/admin" className="hover:text-pink-100">Admin</Link>}
+              {showAdmin && <Link href="/admin" className="site-footer-link">Admin</Link>}
             </div>
           </div>
         </footer>
+        <PaletteTester />
       </body>
     </html>
   );
