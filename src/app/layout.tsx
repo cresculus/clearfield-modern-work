@@ -37,34 +37,34 @@ export default async function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full scroll-smooth antialiased`}
     >
-      <body className="flex min-h-full flex-col bg-[#070810] text-zinc-100">
+      <body className="flex min-h-full flex-col bg-[#1b1240] text-zinc-100">
         <SiteNav />
         <main className="flex-1">{children}</main>
-        <footer className="border-t border-white/10 bg-[#090b16] py-10">
+        <footer className="border-t border-white/25 bg-gradient-to-r from-pink-500/20 via-violet-500/20 to-cyan-500/20 py-10 backdrop-blur-xl">
           <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-6 px-4 text-center sm:flex-row sm:px-6 sm:text-left">
             <div>
               <p className="text-sm font-semibold text-white">Clearfield IT</p>
-              <p className="mt-1 text-xs text-zinc-400">
+              <p className="mt-1 text-xs text-zinc-200/80">
                 Modern Work consulting
               </p>
             </div>
-            <div className="flex flex-wrap items-center justify-center gap-4 text-xs font-medium text-zinc-300">
-              <Link href="/services" className="hover:text-fuchsia-300">
+            <div className="flex flex-wrap items-center justify-center gap-4 text-xs font-medium text-zinc-100">
+              <Link href="/#services" className="hover:text-pink-100">
                 Services
               </Link>
-              <Link href="/how-it-works" className="hover:text-fuchsia-300">
+              <Link href="/#flow" className="hover:text-pink-100">
                 Flow
               </Link>
-              <Link href="/contact" className="hover:text-fuchsia-300">
+              <Link href="/#contact" className="hover:text-pink-100">
                 Contact
               </Link>
-              <Link href="/book" className="hover:text-fuchsia-300">
-                Book
+              <Link href="/dashboard" className="hover:text-pink-100">
+                Dashboard
               </Link>
-              <Link href="/account" className="hover:text-fuchsia-300">
+              <Link href="/account" className="hover:text-pink-100">
                 Account
               </Link>
-              {showAdmin && <Link href="/admin" className="hover:text-fuchsia-300">Admin</Link>}
+              {showAdmin && <Link href="/admin" className="hover:text-pink-100">Admin</Link>}
             </div>
           </div>
         </footer>

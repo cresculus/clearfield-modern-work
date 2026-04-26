@@ -167,7 +167,15 @@ export default function AccountPage() {
             <p className="mt-2 text-xs leading-relaxed text-zinc-400">
               1 credit = 45-minute session.
             </p>
-            <button onClick={() => void logout()} className="mt-4 rounded-full border border-white/20 px-4 py-2 text-sm text-zinc-200">Sign out</button>
+            <div className="mt-4 flex flex-wrap gap-2">
+              <button onClick={() => void logout()} className="rounded-full border border-white/20 px-4 py-2 text-sm text-zinc-200">Sign out</button>
+              <button
+                onClick={() => router.push("/dashboard")}
+                className="rounded-full bg-gradient-to-r from-pink-500 via-violet-500 to-cyan-500 px-4 py-2 text-sm font-semibold text-white"
+              >
+                Open dashboard
+              </button>
+            </div>
           </section>
 
           <section className="glass rounded-2xl p-6">

@@ -70,8 +70,8 @@ export default function Home() {
             <HeroJourney />
 
             <div className="landing-actions">
-              <Link href="/book" className="landing-btn landing-btn-primary">
-                Start with a session
+              <Link href="/dashboard" className="landing-btn landing-btn-primary">
+                Open customer dashboard
               </Link>
               <Link href="/account" className="landing-btn landing-btn-secondary">
                 Create account
@@ -134,7 +134,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="landing-section border-t border-white/5">
+        <section id="flow" className="landing-section border-t border-white/5 scroll-mt-24">
           <p className="landing-section-title">How it works</p>
           <h2 className="landing-section-heading">Credits, calendar, outcomes</h2>
           <div className="landing-steps">
@@ -194,7 +194,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="landing-section border-t border-white/5 pb-24">
+        <section id="contact" className="landing-section border-t border-white/5 pb-24 scroll-mt-24">
           <div className="landing-cta-panel">
             <h2 className="text-xl font-bold text-white sm:text-2xl">Ready when you are</h2>
             <p className="mt-2 max-w-lg text-sm leading-relaxed text-zinc-300">

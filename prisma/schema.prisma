@@ -19,6 +19,12 @@ enum PurchaseStatus {
   REFUNDED
 }
 
+enum CustomerActivityType {
+  NOTE
+  CONVERSATION
+  MEETING
+}
+
 /// End client/prospect account keyed by email.
 model BookingAccount {
   id             String          @id @default(cuid())
@@ -74,6 +80,7 @@ model User {
   updatedAt        DateTime        @updatedAt
   sessions         UserSession[]
   purchases        Purchase[]
+  customers        CustomerProfile[]
 
   @@index([bookingAccountId])
 }
@@ -136,4 +143,35 @@ model EmailSubscriber {
   source         String   @default("site")
   subscribedAt   DateTime @default(now())
   unsubscribedAt DateTime?
+}
+
+/// CRM-style customer record attached to the signed-in consultant user.
+model CustomerProfile {
+  id               String             @id @default(cuid())
+  ownerUserId      String
+  owner            User               @relation(fields: [ownerUserId], references: [id], onDelete: Cascade)
+  fullName         String
+  email            String?
+  company          String?
+  status           String             @default("lead")
+  consultedAt      DateTime?
+  nextFollowUpAt   DateTime?
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  activities       CustomerActivity[]
+
+  @@index([ownerUserId, createdAt])
+}
+
+model CustomerActivity {
+  id            String               @id @default(cuid())
+  customerId    String
+  customer      CustomerProfile      @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  type          CustomerActivityType @default(NOTE)
+  subject       String?
+  body          String
+  occurredAt    DateTime             @default(now())
+  createdAt     DateTime             @default(now())
+
+  @@index([customerId, occurredAt])
 }
