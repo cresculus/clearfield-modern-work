@@ -53,12 +53,11 @@ export default function Home() {
           <div className="landing-hero-inner landing-stagger">
             <p className="landing-banner">Clearfield · AI Agent Operator</p>
             <h1 className="landing-title landing-gradient-text">
-              Build an AI Agent Operator capability inside your business.
+              Build a 10-year AI + M365 operating advantage.
             </h1>
-            <p className="landing-tagline">From AI education to integrated agent systems that execute real work.</p>
+            <p className="landing-tagline">From modern work consulting to AI operator systems that execute real business workflows.</p>
             <p className="landing-subtitle">
-              The next role every company needs is the Agent Operator: someone who designs agent workflows, connects tools and
-              data, monitors performance, and turns business goals into repeatable execution systems.
+              I help M365-based organizations implement AI agent workflows safely, with governance and measurable business outcomes.
             </p>
 
             <div className="landing-pills">
@@ -71,7 +70,7 @@ export default function Home() {
 
             <div className="landing-actions">
               <Link href="/dashboard" className="landing-btn landing-btn-primary">
-                Open customer dashboard
+                Build your roadmap
               </Link>
               <Link href="/account" className="landing-btn landing-btn-secondary">
                 Create account
@@ -83,34 +82,34 @@ export default function Home() {
 
       <div className="landing-container">
         <section className="landing-section border-t border-white/5">
-          <p className="landing-section-title">Who you work with</p>
+          <p className="landing-section-title">Positioning</p>
           <h2 className="landing-section-heading">Brandon Sardelli</h2>
           <p className="landing-lead">
-            AI Agent Operator consultant focused on operational transformation. I help teams learn AI, integrate it into workflows,
-            and deploy practical automation that compounds output.
+            AI + Modern Work operator consultant focused on long-term capability building. We combine M365 governance, AI operations,
+            and practical automation so your team can ship outcomes consistently.
           </p>
           <dl className="landing-facts">
             <div className="landing-fact">
-              <dt>Core focus</dt>
-              <dd>Agent-enabled workflows across marketing, operations, legal, finance, and technical teams.</dd>
+              <dt>Positioning statement</dt>
+              <dd>I help M365-based organizations implement AI agent workflows safely, with governance and measurable business outcomes.</dd>
             </div>
             <div className="landing-fact">
-              <dt>Session format</dt>
-              <dd>Hands-on operating sessions: strategy, system design, implementation, and operator training.</dd>
+              <dt>Core niche</dt>
+              <dd>M365 admin, security, compliance, Copilot adoption, and automation playbooks.</dd>
             </div>
             <div className="landing-fact">
-              <dt>Output</dt>
-              <dd>Playbooks, automation plans, and executable next steps your team can run immediately.</dd>
+              <dt>Operating model</dt>
+              <dd>Human + agent workflows with clear guardrails, escalation paths, and KPI accountability.</dd>
             </div>
           </dl>
           <div className="landing-card-grid mt-6">
             <div className="landing-card">
-              <h3>When teams usually reach out</h3>
-              <p>They are using AI tools, but outcomes are scattered and there is no operator model or system ownership.</p>
+              <h3>What partners buy</h3>
+              <p>Repeatable deliverables: assessment, roadmap, implementation sprint, and managed optimization support.</p>
             </div>
             <div className="landing-card">
-              <h3>What happens after each session</h3>
-              <p>You get a tighter workflow map, clearer agent roles, and concrete implementation actions for the next sprint.</p>
+              <h3>What partners build</h3>
+              <p>A durable in-house operating capability that improves quality, speed, and output every quarter.</p>
             </div>
           </div>
         </section>
@@ -135,13 +134,25 @@ export default function Home() {
         </section>
 
         <section id="flow" className="landing-section border-t border-white/5 scroll-mt-24">
-          <p className="landing-section-title">How it works</p>
-          <h2 className="landing-section-heading">From AI curiosity to operational systems</h2>
+          <p className="landing-section-title">10-year roadmap</p>
+          <h2 className="landing-section-heading">A simple long-term build plan for partners</h2>
           <div className="landing-steps">
             {[
-              { k: "01", title: "Assess workflow leverage", body: "Identify where agents can remove bottlenecks and multiply team output." },
-              { k: "02", title: "Design operator playbooks", body: "Define roles, constraints, memory, tools, and escalation paths." },
-              { k: "03", title: "Deploy and optimize", body: "Implement automation, monitor quality, and iterate performance continuously." },
+              {
+                k: "Years 1-2",
+                title: "Become elite in one niche",
+                body: "Focus on M365 admin, security, compliance, Copilot, and automation playbooks. Ship assessments, roadmaps, and implementation sprints.",
+              },
+              {
+                k: "Years 3-5",
+                title: "Productize consulting",
+                body: "Turn delivery into fixed packages, templates, SOPs, and onboarding kits. Build recurring revenue through retainers and managed optimization.",
+              },
+              {
+                k: "Years 6-10",
+                title: "Build an operator firm",
+                body: "Expand with trained operators/contractors while leadership focuses on sales, standards, and design. Add training, licensing, and lightweight SaaS.",
+              },
             ].map((step) => (
               <div key={step.k} className="landing-step">
                 <p className="landing-step-kicker">{step.k}</p>
@@ -166,30 +177,30 @@ export default function Home() {
           <div className="mt-6 rounded-2xl border border-white/10 bg-white/5 p-5">
             <h3 className="text-base font-semibold text-white">Who this is for</h3>
             <p className="mt-2 text-sm leading-relaxed text-zinc-300">
-              Founders, operators, and team leads who want a practical Human + Agent operating model, not disconnected AI experiments.
+              Founders and operators who want stable execution systems they can own, not temporary AI hype.
             </p>
           </div>
         </section>
 
         <section className="landing-section border-t border-white/5">
-          <p className="landing-section-title">FAQ</p>
-          <h2 className="landing-section-heading">Common questions</h2>
+          <p className="landing-section-title">What to learn next</p>
+          <h2 className="landing-section-heading">Priority stack for long-term stability + growth</h2>
           <div className="landing-card-grid">
             <article className="landing-card">
-              <h3>Is this AI training or implementation?</h3>
-              <p>Both. You learn while we build systems your team can run and improve.</p>
+              <h3>Business architecture</h3>
+              <p>Process mapping, KPI design, and ROI framing so automation ties to business outcomes.</p>
             </article>
             <article className="landing-card">
-              <h3>Do we need engineers for this?</h3>
-              <p>Not always. Many workflows can be deployed with operator playbooks + integrations before custom engineering.</p>
+              <h3>AI operations</h3>
+              <p>Agent workflows, evaluation loops, guardrails, and monitoring for safe, reliable delivery.</p>
             </article>
             <article className="landing-card">
-              <h3>What skills will our team develop?</h3>
-              <p>MCP literacy, CLI workflow fluency, clear spec writing, and practical agent governance.</p>
+              <h3>M365 + AI integration</h3>
+              <p>Copilot, Power Platform, SharePoint/Teams workflow systems, and governance-first rollout.</p>
             </article>
             <article className="landing-card">
-              <h3>Can this be used across departments?</h3>
-              <p>Yes. Marketing, legal, finance, operations, and technical functions are all becoming agent-compatible.</p>
+              <h3>Automation stack + leverage</h3>
+              <p>Low-code orchestration, API connectivity, proposal/pricing discipline, and distribution through case studies + LinkedIn authority.</p>
             </article>
           </div>
         </section>
@@ -198,11 +209,11 @@ export default function Home() {
           <div className="landing-cta-panel">
             <h2 className="text-xl font-bold text-white sm:text-2xl">Ready when you are</h2>
             <p className="mt-2 max-w-lg text-sm leading-relaxed text-zinc-300">
-              Start building your Agent Operator function now. Learn the model, integrate it into workflows, and ship automation with confidence.
+              Start with the 90-day execution plan: niche definition, offer design, first playbook, first case study, and first repeatable revenue system.
             </p>
             <div className="landing-actions !mt-6 !justify-start">
               <Link href="/dashboard" className="landing-btn landing-btn-primary">
-                Open dashboard
+                Start 90-day plan
               </Link>
               <Link href="/account" className="landing-btn landing-btn-secondary">
                 Create account
