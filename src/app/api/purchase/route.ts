@@ -9,14 +9,12 @@ import { requireUser } from "@/lib/auth";
  */
 export async function POST(req: Request) {
   try {
-    const manualPurchasesEnabled =
-      process.env.NODE_ENV !== "production" ||
-      process.env.ENABLE_MANUAL_PURCHASES === "true";
-    if (!manualPurchasesEnabled) {
+    // Stripe is not integrated yet, so keep manual purchases enabled by default.
+    // Set DISABLE_MANUAL_PURCHASES=true only if you explicitly want to block this path.
+    if (process.env.DISABLE_MANUAL_PURCHASES === "true") {
       return NextResponse.json(
         {
-          error:
-            "Manual purchases are disabled in production. Enable Stripe checkout or set ENABLE_MANUAL_PURCHASES=true.",
+          error: "Manual purchases are currently disabled.",
         },
         { status: 503 },
       );

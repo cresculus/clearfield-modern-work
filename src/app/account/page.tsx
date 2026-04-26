@@ -178,16 +178,22 @@ export default function AccountPage() {
             <p className="mt-3 text-xs leading-relaxed text-zinc-400">
               After purchase, credits apply immediately to your account and are available on the booking page.
             </p>
-            <ul className="mt-4 grid gap-3 sm:grid-cols-2">
-              {packs.map((p) => (
-                <li key={p.id} className="rounded-xl border border-white/10 bg-white/5 p-4">
-                  <p className="font-medium text-white">{p.title}</p>
-                  <p className="mt-1 text-sm text-zinc-300">{p.credits} credits</p>
-                  <p className="mt-1 text-sm text-zinc-300">${(p.priceCents / 100).toFixed(2)}</p>
-                  <button disabled={loading} onClick={() => void buyPack(p.id)} className="mt-3 rounded-full bg-gradient-to-r from-fuchsia-500 to-indigo-500 px-3 py-1.5 text-sm font-semibold text-white">Buy</button>
-                </li>
-              ))}
-            </ul>
+            {packs.length === 0 ? (
+              <div className="mt-4 rounded-xl border border-amber-400/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-200">
+                Credit packs are loading. Refresh in a moment if they do not appear.
+              </div>
+            ) : (
+              <ul className="mt-4 grid gap-3 sm:grid-cols-2">
+                {packs.map((p) => (
+                  <li key={p.id} className="rounded-xl border border-white/10 bg-white/5 p-4">
+                    <p className="font-medium text-white">{p.title}</p>
+                    <p className="mt-1 text-sm text-zinc-300">{p.credits} credits</p>
+                    <p className="mt-1 text-sm text-zinc-300">${(p.priceCents / 100).toFixed(2)}</p>
+                    <button disabled={loading} onClick={() => void buyPack(p.id)} className="mt-3 rounded-full bg-gradient-to-r from-fuchsia-500 to-indigo-500 px-3 py-1.5 text-sm font-semibold text-white">Buy</button>
+                  </li>
+                ))}
+              </ul>
+            )}
           </section>
         </div>
       )}
