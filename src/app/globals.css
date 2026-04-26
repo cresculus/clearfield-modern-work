@@ -121,6 +121,24 @@ input:-webkit-autofill {
   transition: background-color 9999s ease-out;
 }
 
+/* Ensure all interactive controls feel clickable. */
+button,
+[role="button"],
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+a[class],
+.cta-gradient,
+.landing-btn {
+  cursor: pointer;
+}
+
+button:disabled,
+input:disabled,
+[role="button"][aria-disabled="true"] {
+  cursor: not-allowed;
+}
+
 .hero-grid {
   background-image:
     radial-gradient(circle at 18% 18%, var(--hero-g1), transparent 42%),
