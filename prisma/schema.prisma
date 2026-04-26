@@ -38,6 +38,7 @@ model BookingAccount {
   bookings       Booking[]
   users          User[]
   purchases      Purchase[]
+  sessionNotes   SessionNote[]
   emailOptIn     Boolean         @default(true)
 
   @@map("Client")
@@ -63,9 +64,24 @@ model Booking {
   kind      String         @default("paid")
   status    String         @default("confirmed")
   createdAt DateTime       @default(now())
+  notes     SessionNote[]
 
   @@unique([startsAt])
   @@index([clientId])
+}
+
+model SessionNote {
+  id         String         @id @default(cuid())
+  clientId   String
+  account    BookingAccount @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  bookingId  String?
+  booking    Booking?       @relation(fields: [bookingId], references: [id], onDelete: SetNull)
+  subject    String?
+  body       String
+  createdAt  DateTime       @default(now())
+
+  @@index([clientId, createdAt])
+  @@index([bookingId])
 }
 
 model User {
