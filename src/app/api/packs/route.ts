@@ -1,12 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { prismaErrorResponse } from "@/lib/prisma-errors";
-
-const DEFAULT_PACKS = [
-  { slug: "starter", title: "Starter pack", credits: 3, priceCents: 45000, displayOrder: 1 },
-  { slug: "bench", title: "Bench pack", credits: 8, priceCents: 112000, displayOrder: 2 },
-  { slug: "field", title: "Field pack", credits: 20, priceCents: 250000, displayOrder: 3 },
-] as const;
+import { MARKET_RATE_PACKS } from "@/lib/agent-operator-offers";
 
 export async function GET() {
   try {
@@ -17,7 +12,7 @@ export async function GET() {
 
     // Ensure first-time environments can buy credits immediately without running admin seed.
     if (packs.length === 0) {
-      for (const pack of DEFAULT_PACKS) {
+      for (const pack of MARKET_RATE_PACKS) {
         await prisma.creditPack.upsert({
           where: { slug: pack.slug },
           update: pack,

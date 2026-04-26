@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { prismaErrorResponse } from "@/lib/prisma-errors";
 import { hashPassword } from "@/lib/password";
+import { MARKET_RATE_PACKS } from "@/lib/agent-operator-offers";
 
 /**
  * One-time bootstrap helper.
@@ -15,11 +16,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Forbidden." }, { status: 403 });
     }
 
-    const defaults = [
-      { slug: "starter", title: "Starter pack", credits: 3, priceCents: 45000, displayOrder: 1 },
-      { slug: "bench", title: "Bench pack", credits: 8, priceCents: 112000, displayOrder: 2 },
-      { slug: "field", title: "Field pack", credits: 20, priceCents: 250000, displayOrder: 3 },
-    ];
+    const defaults = MARKET_RATE_PACKS;
     for (const p of defaults) {
       await prisma.creditPack.upsert({
         where: { slug: p.slug },

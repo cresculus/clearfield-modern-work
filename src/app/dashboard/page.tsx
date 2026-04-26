@@ -22,10 +22,16 @@ type Customer = {
   activities: Activity[];
 };
 
+type Me = {
+  authenticated: boolean;
+  user?: { email: string; account: { creditBalance: number } };
+};
+
 const statusOptions = ["lead", "active", "consulted", "paused", "closed"] as const;
 
 export default function DashboardPage() {
   const router = useRouter();
+  const [me, setMe] = useState<Me>({ authenticated: false });
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -47,35 +53,59 @@ export default function DashboardPage() {
     occurredAt: "",
   });
 
-  const selected = useMemo(
-    () => customers.find((c) => c.id === selectedId) ?? null,
-    [customers, selectedId],
+  const selected = useMemo(() => customers.find((c) => c.id === selectedId) ?? null, [customers, selectedId]);
+  const consultedCount = useMemo(
+    () => customers.filter((c) => c.status.toLowerCase() === "consulted").length,
+    [customers],
+  );
+  const totalActivities = useMemo(
+    () => customers.reduce((sum, c) => sum + c.activities.length, 0),
+    [customers],
+  );
+  const upcomingFollowups = useMemo(
+    () => customers.filter((c) => Boolean(c.nextFollowUpAt)).length,
+    [customers],
   );
 
-  async function loadCustomers() {
-    setLoading(true);
-    setError(null);
-    try {
-      const res = await fetch("/api/dashboard/customers", { cache: "no-store" });
-      if (res.status === 401) {
-        router.replace("/account?returnTo=/dashboard");
-        return;
-      }
-      const data = (await res.json()) as { customers?: Customer[]; error?: string };
-      if (!res.ok) throw new Error(data.error ?? "Failed loading dashboard.");
-      const list = data.customers ?? [];
-      setCustomers(list);
-      if (list.length > 0 && !selectedId) setSelectedId(list[0].id);
-    } catch (e) {
-      setError(e instanceof Error ? e.message : "Failed loading dashboard.");
-    } finally {
-      setLoading(false);
+  async function loadMe() {
+    const res = await fetch("/api/auth/me", { cache: "no-store" });
+    const data = (await res.json()) as Me;
+    if (!data.authenticated) {
+      router.replace("/account?returnTo=/dashboard");
+      return false;
     }
+    setMe(data);
+    return true;
+  }
+
+  async function loadCustomers() {
+    const res = await fetch("/api/dashboard/customers", { cache: "no-store" });
+    if (res.status === 401) {
+      router.replace("/account?returnTo=/dashboard");
+      return;
+    }
+    const data = (await res.json()) as { customers?: Customer[]; error?: string };
+    if (!res.ok) throw new Error(data.error ?? "Failed loading dashboard.");
+    const list = data.customers ?? [];
+    setCustomers(list);
+    if (list.length > 0 && !selectedId) setSelectedId(list[0].id);
   }
 
   useEffect(() => {
     queueMicrotask(() => {
-      void loadCustomers();
+      void (async () => {
+        setLoading(true);
+        setError(null);
+        try {
+          const ok = await loadMe();
+          if (!ok) return;
+          await loadCustomers();
+        } catch (e) {
+          setError(e instanceof Error ? e.message : "Failed loading dashboard.");
+        } finally {
+          setLoading(false);
+        }
+      })();
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -116,7 +146,7 @@ export default function DashboardPage() {
       });
       const data = (await res.json()) as { error?: string };
       if (!res.ok) throw new Error(data.error ?? "Could not add activity.");
-      setMessage("Activity saved.");
+      setMessage("Timeline entry saved.");
       setNewActivity({ type: "NOTE", subject: "", body: "", occurredAt: "" });
       await loadCustomers();
     } catch (e) {
@@ -127,23 +157,51 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
+    <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-zinc-300">Customer dashboard</p>
-          <h1 className="mt-2 text-3xl font-bold tracking-tight text-white">AI Agent Operator CRM</h1>
-          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-zinc-200">
-            Track customer names, conversations, notes, workflow priorities, and consultation progress in one place.
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-zinc-200">Customer dashboard</p>
+          <h1 className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl">Operator Command Center</h1>
+          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-zinc-100/90">
+            A clean, Salesforce-style workspace for credits, customer records, conversations, notes, and follow-up dates.
           </p>
+        </div>
+        <div className="glass rounded-2xl px-4 py-3">
+          <p className="text-xs uppercase tracking-wide text-zinc-100/70">Signed in</p>
+          <p className="mt-1 text-sm font-semibold text-white">{me.user?.email ?? "..."}</p>
         </div>
       </div>
 
       {error && <p className="mt-4 rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-sm text-red-100">{error}</p>}
       {message && <p className="mt-4 rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-sm text-emerald-100">{message}</p>}
 
-      <div className="mt-8 grid gap-6 lg:grid-cols-[1.1fr_1.9fr]">
-        <section className="glass rounded-2xl p-5">
-          <h2 className="text-lg font-semibold text-white">Add customer</h2>
+      <section className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <article className="glass rounded-2xl p-4">
+          <p className="text-xs uppercase tracking-wider text-zinc-100/70">Credits</p>
+          <p className="mt-2 text-3xl font-bold text-white">{me.user?.account.creditBalance ?? 0}</p>
+          <p className="mt-1 text-xs text-zinc-100/70">1 credit = 45-minute session</p>
+        </article>
+        <article className="glass rounded-2xl p-4">
+          <p className="text-xs uppercase tracking-wider text-zinc-100/70">Customers</p>
+          <p className="mt-2 text-3xl font-bold text-white">{customers.length}</p>
+          <p className="mt-1 text-xs text-zinc-100/70">Total customer records</p>
+        </article>
+        <article className="glass rounded-2xl p-4">
+          <p className="text-xs uppercase tracking-wider text-zinc-100/70">Consulted</p>
+          <p className="mt-2 text-3xl font-bold text-white">{consultedCount}</p>
+          <p className="mt-1 text-xs text-zinc-100/70">In consulted status</p>
+        </article>
+        <article className="glass rounded-2xl p-4">
+          <p className="text-xs uppercase tracking-wider text-zinc-100/70">Timeline entries</p>
+          <p className="mt-2 text-3xl font-bold text-white">{totalActivities}</p>
+          <p className="mt-1 text-xs text-zinc-100/70">{upcomingFollowups} with upcoming follow-up</p>
+        </article>
+      </section>
+
+      <div className="mt-8 grid gap-6 xl:grid-cols-[1fr_2fr]">
+        <section className="glass rounded-2xl p-6">
+          <h2 className="text-lg font-semibold text-white">Add customer record</h2>
+          <p className="mt-1 text-sm text-zinc-100/80">Capture profile, status, and key dates in one step.</p>
           <div className="mt-4 space-y-3">
             <input className="w-full rounded-lg border border-white/25 bg-white/10 px-3 py-2 text-sm text-white placeholder:text-zinc-200/70" placeholder="Full name" value={newCustomer.fullName} onChange={(e) => setNewCustomer((s) => ({ ...s, fullName: e.target.value }))} />
             <input className="w-full rounded-lg border border-white/25 bg-white/10 px-3 py-2 text-sm text-white placeholder:text-zinc-200/70" placeholder="Email" value={newCustomer.email} onChange={(e) => setNewCustomer((s) => ({ ...s, email: e.target.value }))} />
@@ -163,14 +221,14 @@ export default function DashboardPage() {
           </div>
         </section>
 
-        <section className="glass rounded-2xl p-5">
-          <h2 className="text-lg font-semibold text-white">Customers</h2>
+        <section className="glass rounded-2xl p-6">
+          <h2 className="text-lg font-semibold text-white">Customer records</h2>
           {loading ? (
             <p className="mt-4 text-sm text-zinc-100/80">Loading customers...</p>
           ) : customers.length === 0 ? (
             <p className="mt-4 text-sm text-zinc-100/80">No customers yet. Add your first customer record.</p>
           ) : (
-            <div className="mt-4 grid gap-4 md:grid-cols-[1fr_1.2fr]">
+            <div className="mt-4 grid gap-4 lg:grid-cols-[0.9fr_1.35fr]">
               <aside className="space-y-2">
                 {customers.map((c) => (
                   <button
@@ -179,7 +237,7 @@ export default function DashboardPage() {
                     onClick={() => setSelectedId(c.id)}
                     className={`w-full rounded-xl border px-3 py-3 text-left text-sm transition ${
                       selectedId === c.id
-                        ? "border-pink-300/70 bg-pink-400/20 text-white"
+                        ? "border-cyan-200/70 bg-cyan-400/20 text-white"
                         : "border-white/20 bg-white/5 text-zinc-100 hover:bg-white/10"
                     }`}
                   >
@@ -191,16 +249,23 @@ export default function DashboardPage() {
               </aside>
 
               {selected && (
-                <div className="rounded-xl border border-white/20 bg-white/5 p-4">
-                  <h3 className="text-base font-semibold text-white">{selected.fullName}</h3>
-                  <p className="mt-1 text-sm text-zinc-100/85">{selected.email || "No email"} · {selected.company || "No company"}</p>
+                <div className="rounded-xl border border-white/20 bg-white/5 p-5">
+                  <div className="flex flex-wrap items-start justify-between gap-3">
+                    <div>
+                      <h3 className="text-lg font-semibold text-white">{selected.fullName}</h3>
+                      <p className="mt-1 text-sm text-zinc-100/85">{selected.email || "No email"} · {selected.company || "No company"}</p>
+                    </div>
+                    <span className="rounded-full border border-white/25 bg-white/10 px-3 py-1 text-xs uppercase tracking-wide text-zinc-100">
+                      {selected.status}
+                    </span>
+                  </div>
                   <p className="mt-1 text-xs text-zinc-100/75">
                     Consulted: {selected.consultedAt ? new Date(selected.consultedAt).toLocaleDateString() : "Not set"} | Follow-up:{" "}
                     {selected.nextFollowUpAt ? new Date(selected.nextFollowUpAt).toLocaleDateString() : "Not set"}
                   </p>
 
                   <div className="mt-4 rounded-xl border border-white/20 bg-white/10 p-3">
-                    <h4 className="text-sm font-semibold text-white">Add note / conversation</h4>
+                    <h4 className="text-sm font-semibold text-white">Add timeline entry</h4>
                     <div className="mt-3 space-y-2">
                       <select className="w-full rounded-lg border border-white/25 bg-white/10 px-3 py-2 text-sm text-white" value={newActivity.type} onChange={(e) => setNewActivity((s) => ({ ...s, type: e.target.value as Activity["type"] }))}>
                         <option value="NOTE" className="text-black">Note</option>
