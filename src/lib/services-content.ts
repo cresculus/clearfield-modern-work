@@ -1,26 +1,26 @@
 export const SERVICES = [
   {
-    title: "Entra ID & identity",
-    body: "Join types, hybrid identity, Conditional Access, MFA posture, guest access, and least-privilege RBAC patterns.",
+    title: "AI workflow design",
+    body: "Map current SOPs into agent-compatible workflows so teams move from dashboard clicking to outcome orchestration.",
   },
   {
-    title: "Microsoft Intune & endpoints",
-    body: "Enrollment, compliance, baselines, Windows Autopilot, Apple Business Manager, apps, Tunnel, scope tags, and multi-tenant hygiene.",
+    title: "Agent operator training",
+    body: "Teach your team how to operate agents safely: role design, constraints, escalation paths, and quality control loops.",
   },
   {
-    title: "Defender & Secure Score",
-    body: "Defender for Endpoint alignment with Intune, ASR, disk encryption, reporting, and prioritizing remediation.",
+    title: "Automation systems",
+    body: "Build practical automations that connect tools, data, and actions so routine work executes with less manual effort.",
   },
   {
-    title: "Azure Virtual Desktop",
-    body: "Host pools, images, sizing, patching cadence, and Intune integration for session hosts.",
+    title: "MCP and tool integration",
+    body: "Implement Model Context Protocol patterns so agents can use tools, memory, and structured context reliably.",
   },
   {
-    title: "Baselines & hardening",
-    body: "CIS-style controls, policy rollout sequencing, drift review, and enforcement planning.",
+    title: "CLI-first delivery",
+    body: "Design repeatable command-line and scripted pipelines for serious production agent operations.",
   },
   {
-    title: "Go-live execution",
-    body: "Structured kickoff → configuration → validation → handoff—the same motion as enterprise onboarding, for your tenant.",
+    title: "Agent playbooks and governance",
+    body: "Create clear written specs, agent definitions, and operating standards that teams can run and improve over time.",
   },
 ] as const;

@@ -18,11 +18,11 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Clearfield — Microsoft 365 & Modern Work consulting",
+    default: "Clearfield — AI Agent Operator Consulting",
     template: "%s | Clearfield",
   },
   description:
-    "Hands-on Microsoft 365 consulting: Entra ID, Intune, Defender, AVD, baselines, and rollout execution.",
+    "AI Agent Operator consulting: agent workflow design, MCP integration, automation systems, and team enablement.",
 };
 
 export default async function RootLayout({
@@ -46,7 +46,7 @@ export default async function RootLayout({
             <div>
               <p className="text-sm font-semibold text-white">Clearfield IT</p>
               <p className="mt-1 text-xs text-zinc-200/80">
-                Modern Work consulting
+                AI Agent Operator consulting
               </p>
             </div>
             <div className="flex flex-wrap items-center justify-center gap-4 text-xs font-medium text-zinc-100">

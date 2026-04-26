@@ -131,9 +131,9 @@ export default function DashboardPage() {
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.22em] text-zinc-300">Customer dashboard</p>
-          <h1 className="mt-2 text-3xl font-bold tracking-tight text-white">Consulting CRM</h1>
+          <h1 className="mt-2 text-3xl font-bold tracking-tight text-white">AI Agent Operator CRM</h1>
           <p className="mt-2 max-w-2xl text-sm leading-relaxed text-zinc-200">
-            Track customer names, conversations, notes, dates, and consultation progress in one place.
+            Track customer names, conversations, notes, workflow priorities, and consultation progress in one place.
           </p>
         </div>
       </div>

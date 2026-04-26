@@ -3,34 +3,34 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "How it works | Clearfield",
-  description: "Credits, sessions, and what to expect when you book Clearfield consulting.",
+  description: "How Clearfield builds AI Agent Operator systems: assessment, design, implementation, and optimization.",
 };
 
 const steps = [
   {
-    title: "1. Review scope",
-    body: "Start on the Book page. Confirm this is the right fit and identify the most important blocker to discuss first.",
+    title: "1. Identify leverage",
+    body: "Map where your team loses time and where agents can execute work loops with the highest operational leverage.",
   },
   {
-    title: "2. Create account",
-    body: "Register with work or Gmail. Your profile stores credits, booking history, and account details in one place.",
+    title: "2. Design agent behavior",
+    body: "Translate business objectives into roles, constraints, memory, and tool interactions that agents can execute safely.",
   },
   {
-    title: "3. Use credits and choose time",
-    body: "New accounts get an intro credit. Additional sessions use purchased credit packs. Sessions are 45 minutes in US Eastern hours.",
+    title: "3. Build workflow systems",
+    body: "Connect MCPs, CLIs, documents, and data into repeatable pipelines that support real daily operations.",
   },
   {
-    title: "4. Execute and follow up",
-    body: "After booking, you receive confirmation and a focused session. You leave with practical next steps, not generic talking points.",
+    title: "4. Operate and optimize",
+    body: "Monitor outputs, correct drift, and continuously improve agent performance as teams become human + agent hybrids.",
   },
 ];
 
 export default function HowItWorksPage() {
   return (
     <div className="mx-auto max-w-4xl px-4 py-14 sm:px-6">
-      <h1 className="text-4xl font-bold tracking-tight text-white">How booking works</h1>
+      <h1 className="text-4xl font-bold tracking-tight text-white">How the Agent Operator model works</h1>
       <p className="mt-4 max-w-3xl text-base leading-relaxed text-zinc-300">
-        This flow keeps everything clear: account, credits, booking, then execution. No hidden process and no vague outcomes.
+        The goal is not just using AI tools. The goal is operating agent systems that produce measurable business outcomes.
       </p>
 
       <ol className="mt-12 space-y-6">
@@ -46,38 +46,38 @@ export default function HowItWorksPage() {
       </ol>
 
       <section className="glass mt-12 rounded-2xl p-6">
-        <h2 className="font-semibold text-white">Credit model and expectations</h2>
+        <h2 className="font-semibold text-white">Required operator capabilities</h2>
         <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-zinc-300">
-          <li>1 credit = 45-minute session + brief written next-steps summary.</li>
-          <li>Credits are consumed when a slot is booked.</li>
-          <li>Response/coordination target after booking: one business day.</li>
-          <li>Managed/on-call operations are out-of-scope unless separately contracted.</li>
+          <li>MCP fluency for structured tool and context access.</li>
+          <li>CLI comfort for programmable, repeatable workflows.</li>
+          <li>Clear writing for specs, instructions, and agent definitions.</li>
+          <li>Business acumen to automate leverage, not noise.</li>
         </ul>
       </section>
 
       <section className="glass mt-6 rounded-2xl p-6">
-        <h2 className="font-semibold text-white">What to prepare before your session</h2>
+        <h2 className="font-semibold text-white">What to prepare before kickoff</h2>
         <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-zinc-300">
-          <li>Your current pain points and desired outcome.</li>
-          <li>Tenant context: size, licensing, and current tooling where relevant.</li>
-          <li>Any deadlines or active projects we must align to.</li>
+          <li>Your highest-friction workflows and current bottlenecks.</li>
+          <li>Current tools, data systems, and where handoffs break.</li>
+          <li>Target outcomes: speed, quality, capacity, or cost reduction.</li>
         </ul>
       </section>
 
       <section className="glass mt-6 rounded-2xl p-6">
         <h2 className="font-semibold text-white">After the session</h2>
         <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-zinc-300">
-          <li>You get a short implementation-oriented summary.</li>
-          <li>Prioritized next actions are listed in execution order.</li>
-          <li>If needed, book follow-up sessions to work through remaining blockers.</li>
+          <li>You get an implementation-focused operator plan.</li>
+          <li>We define next build steps, guardrails, and measurement points.</li>
+          <li>Follow-up execution sessions can scale the system across teams.</li>
         </ul>
       </section>
 
       <Link
-        href="/book"
+        href="/dashboard"
         className="mt-10 inline-flex rounded-full bg-gradient-to-r from-fuchsia-500 to-indigo-500 px-6 py-3 text-sm font-semibold text-white hover:opacity-90"
       >
-        Continue to booking
+        Open dashboard
       </Link>
     </div>
   );
