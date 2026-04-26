@@ -121,7 +121,10 @@ export default function AccountPage() {
   return (
     <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
       <h1 className="text-3xl font-bold tracking-tight text-white">Account & Credits</h1>
-      <p className="mt-2 text-sm text-zinc-300">Use Gmail or any work email.</p>
+      <p className="mt-2 max-w-3xl text-sm leading-relaxed text-zinc-300">
+        This page is your control center for sign-in, credits, and booking access. Use Gmail or work email. Credits are tied
+        to your account so booking history and balance stay synchronized.
+      </p>
 
       {error && <p className="mt-4 rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-sm text-red-200">{error}</p>}
       {message && <p className="mt-4 rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-sm text-emerald-200">{message}</p>}
@@ -130,6 +133,9 @@ export default function AccountPage() {
         <div className="mt-8 grid gap-6 md:grid-cols-2">
           <section className="glass rounded-2xl p-6">
             <h2 className="font-semibold text-white">Register</h2>
+            <p className="mt-2 text-xs leading-relaxed text-zinc-400">
+              New accounts can use the intro credit to book a first session.
+            </p>
             <div className="mt-4 space-y-3">
               <input className="w-full rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-white placeholder:text-zinc-400" placeholder="Full name" value={fullName} onChange={(e) => setFullName(e.target.value)} />
               <input className="w-full rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-white placeholder:text-zinc-400" placeholder="Company" value={company} onChange={(e) => setCompany(e.target.value)} />
@@ -141,6 +147,9 @@ export default function AccountPage() {
 
           <section className="glass rounded-2xl p-6">
             <h2 className="font-semibold text-white">Sign in</h2>
+            <p className="mt-2 text-xs leading-relaxed text-zinc-400">
+              Returning clients can sign in to manage credits and book time.
+            </p>
             <div className="mt-4 space-y-3">
               <input className="w-full rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-white placeholder:text-zinc-400" placeholder="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
               <input className="w-full rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-white placeholder:text-zinc-400" placeholder="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
@@ -155,6 +164,9 @@ export default function AccountPage() {
             <p className="mt-3 text-sm text-zinc-300">{me.user?.email}</p>
             <p className="mt-2 text-sm text-zinc-400">{me.user?.role}</p>
             <p className="mt-2 text-3xl font-bold text-white">{me.user?.account.creditBalance ?? 0} credits</p>
+            <p className="mt-2 text-xs leading-relaxed text-zinc-400">
+              1 credit = 45-minute session.
+            </p>
             <button onClick={() => void logout()} className="mt-4 rounded-full border border-white/20 px-4 py-2 text-sm text-zinc-200">Sign out</button>
           </section>
 
@@ -163,6 +175,9 @@ export default function AccountPage() {
             <div className="mt-3 rounded-lg border border-white/10 bg-white/5 p-3 text-xs leading-relaxed text-zinc-300">
               <p><strong>1 credit:</strong> one 45-minute session + short action summary.</p>
             </div>
+            <p className="mt-3 text-xs leading-relaxed text-zinc-400">
+              After purchase, credits apply immediately to your account and are available on the booking page.
+            </p>
             <ul className="mt-4 grid gap-3 sm:grid-cols-2">
               {packs.map((p) => (
                 <li key={p.id} className="rounded-xl border border-white/10 bg-white/5 p-4">

@@ -53,11 +53,12 @@ export default function Home() {
           <div className="landing-hero-inner landing-stagger">
             <p className="landing-banner">Clearfield · Modern Work</p>
             <h1 className="landing-title landing-gradient-text">
-              Microsoft 365 consulting that ships.
+              Microsoft 365 problems solved with execution, not fluff.
             </h1>
-            <p className="landing-tagline">Hands-on, not slide-only.</p>
+            <p className="landing-tagline">For MSPs and internal IT teams that need outcomes fast.</p>
             <p className="landing-subtitle">
-              Entra ID, Intune, Defender, AVD. Sign in, use credits, book time, and walk away with next steps you can execute.
+              Clearfield is a focused consulting workflow: create an account, use intro credits, book a session, and leave with
+              a concrete implementation plan you can apply immediately.
             </p>
 
             <div className="landing-pills">
@@ -70,10 +71,10 @@ export default function Home() {
 
             <div className="landing-actions">
               <Link href="/book" className="landing-btn landing-btn-primary">
-                Book a session
+                Start with a session
               </Link>
               <Link href="/account" className="landing-btn landing-btn-secondary">
-                Login / Register
+                Create account
               </Link>
             </div>
           </div>
@@ -85,8 +86,33 @@ export default function Home() {
           <p className="landing-section-title">Who you work with</p>
           <h2 className="landing-section-heading">Brandon Sardelli</h2>
           <p className="landing-lead">
-            Same patterns as enterprise go-lives—scoped for your tenant, your MSP, or your internal IT team. Credits keep scheduling predictable.
+            Modern Work consultant and go-live engineer. You get enterprise-grade standards adapted to your tenant size, risk profile,
+            and timeline.
           </p>
+          <dl className="landing-facts">
+            <div className="landing-fact">
+              <dt>Core focus</dt>
+              <dd>Microsoft 365 identity, endpoint, security, and AVD delivery.</dd>
+            </div>
+            <div className="landing-fact">
+              <dt>Session format</dt>
+              <dd>45-minute technical sessions with direct implementation guidance.</dd>
+            </div>
+            <div className="landing-fact">
+              <dt>Output</dt>
+              <dd>Clear next-step summary for your admin, architect, or IT lead.</dd>
+            </div>
+          </dl>
+          <div className="landing-card-grid mt-6">
+            <div className="landing-card">
+              <h3>When teams usually reach out</h3>
+              <p>Conditional Access gaps, Intune rollout friction, Defender tuning, noisy Secure Score findings, or AVD stability issues.</p>
+            </div>
+            <div className="landing-card">
+              <h3>What happens after each session</h3>
+              <p>Action summary, recommended sequence, and practical “do this next” guidance for engineers and decision makers.</p>
+            </div>
+          </div>
         </section>
 
         <section id="services" className="landing-section scroll-mt-24 border-t border-white/5">
@@ -101,6 +127,11 @@ export default function Home() {
               </li>
             ))}
           </ul>
+          <div className="mt-6 rounded-2xl border border-white/10 bg-white/5 p-5">
+            <p className="text-sm leading-relaxed text-zinc-300">
+              Need help choosing scope? Start with one booking and we will prioritize by business impact and rollout risk.
+            </p>
+          </div>
         </section>
 
         <section className="landing-section border-t border-white/5">
@@ -109,8 +140,8 @@ export default function Home() {
           <div className="landing-steps">
             {[
               { k: "01", title: "Create account", body: "Email + password. Your org is stored for credits and bookings." },
-              { k: "02", title: "Buy credits", body: "Starter packs for follow-on work after your intro credit." },
-              { k: "03", title: "Book & execute", body: "1 credit = 45 minutes. Session notes point to concrete changes." },
+              { k: "02", title: "Use intro credit or buy packs", body: "New accounts start with an intro credit. Add packs when you need more time." },
+              { k: "03", title: "Book and execute", body: "1 credit = 45 minutes. We focus on blockers, sequencing, and implementation details." },
             ].map((step) => (
               <div key={step.k} className="landing-step">
                 <p className="landing-step-kicker">{step.k}</p>
@@ -132,13 +163,42 @@ export default function Home() {
               &ldquo;Practical guidance—not generic consulting decks we would never implement.&rdquo;
             </blockquote>
           </div>
+          <div className="mt-6 rounded-2xl border border-white/10 bg-white/5 p-5">
+            <h3 className="text-base font-semibold text-white">Who this is for</h3>
+            <p className="mt-2 text-sm leading-relaxed text-zinc-300">
+              IT leaders, architects, and admins who need specific Microsoft guidance they can act on now, not generic strategy-only advisory.
+            </p>
+          </div>
+        </section>
+
+        <section className="landing-section border-t border-white/5">
+          <p className="landing-section-title">FAQ</p>
+          <h2 className="landing-section-heading">Common questions</h2>
+          <div className="landing-card-grid">
+            <article className="landing-card">
+              <h3>Do I need to commit long term?</h3>
+              <p>No. Start with one booking. Add credits only when you need more sessions.</p>
+            </article>
+            <article className="landing-card">
+              <h3>What if we have multiple blockers?</h3>
+              <p>We prioritize by risk and business impact, then sequence follow-up sessions.</p>
+            </article>
+            <article className="landing-card">
+              <h3>Can this support project go-lives?</h3>
+              <p>Yes. The process is built around rollout readiness, validation, and handoff planning.</p>
+            </article>
+            <article className="landing-card">
+              <h3>Is this managed services?</h3>
+              <p>No. This is targeted consulting + execution guidance unless separately contracted.</p>
+            </article>
+          </div>
         </section>
 
         <section className="landing-section border-t border-white/5 pb-24">
           <div className="landing-cta-panel">
             <h2 className="text-xl font-bold text-white sm:text-2xl">Ready when you are</h2>
             <p className="mt-2 max-w-lg text-sm leading-relaxed text-zinc-300">
-              Use your intro credit or buy a pack, then grab a slot in Eastern Time.
+              Use your intro credit, or buy a pack if you already know you need multiple sessions. All bookings are shown in Eastern Time.
             </p>
             <div className="landing-actions !mt-6 !justify-start">
               <Link href="/book" className="landing-btn landing-btn-primary">

@@ -4,7 +4,10 @@ export default function BookOverviewPage() {
   return (
     <div className="space-y-8">
       <section className="space-y-4">
-        <h2 className="text-lg font-semibold text-white">What you get</h2>
+        <h2 className="text-lg font-semibold text-white">What this booking includes</h2>
+        <p className="max-w-2xl text-sm leading-relaxed text-zinc-300">
+          The session is designed for active Microsoft 365 workstreams, not generic discovery calls.
+        </p>
         <ul className="grid gap-3 sm:grid-cols-2">
           {[
             "45-minute live session (video or phone—coordinate by email after booking).",
@@ -26,11 +29,20 @@ export default function BookOverviewPage() {
       </section>
 
       <section className="glass rounded-xl p-5">
-        <h2 className="font-semibold text-white">Credits</h2>
+        <h2 className="font-semibold text-white">Credits and scheduling</h2>
         <p className="mt-2 text-sm leading-relaxed text-zinc-300">
-          Each booking consumes <strong>one credit</strong> (one scheduled block). After your welcome credit, add packs
-          via the developer API today—Stripe checkout can replace that when you are ready.
+          Each booking consumes <strong>one credit</strong> (one scheduled 45-minute block). New accounts receive an intro
+          credit, then you can add packs from the account page.
         </p>
+      </section>
+
+      <section className="glass rounded-xl p-5">
+        <h2 className="font-semibold text-white">Before you continue</h2>
+        <ul className="mt-2 list-disc space-y-1 pl-5 text-sm leading-relaxed text-zinc-300">
+          <li>Have your top 1-2 technical goals ready.</li>
+          <li>Bring relevant tenant context (licenses, device scope, current blockers).</li>
+          <li>If this is urgent production support, contact directly first.</li>
+        </ul>
       </section>
 
       <div className="flex flex-col gap-3 sm:flex-row">
@@ -38,7 +50,7 @@ export default function BookOverviewPage() {
           href="/book/email"
           className="inline-flex flex-1 items-center justify-center rounded-full bg-gradient-to-r from-fuchsia-500 to-indigo-500 px-6 py-3 text-center text-sm font-semibold text-white transition hover:opacity-90"
         >
-          Start
+          Continue
         </Link>
         <Link
           href="/how-it-works"

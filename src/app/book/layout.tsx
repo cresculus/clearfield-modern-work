@@ -24,6 +24,11 @@ export default function BookLayout({ children }: { children: React.ReactNode }) 
           Four quick steps: overview, account check, choose a time (US Eastern business hours), then confirmation.
           Credits are tied to your signed-in account.
         </p>
+        <div className="mt-4 grid gap-3 text-sm text-zinc-300 sm:grid-cols-3">
+          <div className="rounded-xl border border-white/10 bg-white/5 px-3 py-2">1 credit = 45 minutes</div>
+          <div className="rounded-xl border border-white/10 bg-white/5 px-3 py-2">Intro credit for new users</div>
+          <div className="rounded-xl border border-white/10 bg-white/5 px-3 py-2">Focused next-step summary included</div>
+        </div>
         <div className="mt-6">
           <ExtensionTip />
         </div>
